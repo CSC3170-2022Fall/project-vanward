@@ -18,10 +18,10 @@ Our team consists of the following members, listed in the table below (the team 
 
 | Student ID | Student Name | GitHub Account (in Email) |
 | ---------- | ------------ | ------------------------- |
-| 123010245  | 张三 🚩      | sanzhang@gmail.com        |
+| 120090194  | 桂驰 🚩      | 120090194@link.cuhk.edu.cn       |
 | 123010345  | 李四         | sili@outlook.com          |
 | 123030245  | 王五         | wuwang@foxmail.com        |
-| 120090671  | 从御政         | 120090671@link.cuhk.edu.cn            |
+| 123020245  | 陈六         | liuchen@qq.com            |
 | 123010249  | 朱九         | jiuzhu@163.com            |
 
 ## Project Specification
