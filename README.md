@@ -19,7 +19,7 @@ Our team consists of the following members, listed in the table below (the team 
 | 120090117  | 赵思远         | 120090117@link.cuhk.edu.cn        |
 | 120090671  | 从御政         | 120090671@link.cuhk.edu.cn        |
 | 120090026  | 孙思鹏         | 120090026@link.cuhk.edu.cn        |
-| 123010249  | 朱九         | jiuzhu@163.com            |
+| 121040084  | 钟嘉乐        | 121040084@link.cuhk.edu.cn       |
 
 ## Project Specification
 
