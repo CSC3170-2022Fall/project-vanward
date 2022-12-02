@@ -185,6 +185,7 @@ class Table implements Iterable<Row> {
 
     /** My rows. */
     private HashSet<Row> _rows = new HashSet<>();
+    private String[] column_titles;
     // FILL IN
 }
 
