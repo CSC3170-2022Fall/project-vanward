@@ -41,21 +41,41 @@ class Row {
      */
     Row(List<Column> columns, Row... rows) {
         // FILL IN
+        int length = columns.size();
+        _data = new String[length];
+        int idx = 0;
+        for(Column column: columns){
+            _data[idx] = column.getFrom(rows);
+            idx++;
+        }
     }
 
     /** Return my number of columns. */
     int size() {
-        return 0;  // REPLACE WITH SOLUTION
+        return _data.length;  // REPLACE WITH SOLUTION
     }
 
     /** Return the value of my Kth column.  Requires that 0 <= K < size(). */
     String get(int k) {
-        return null; // REPLACE WITH SOLUTION
+        if(0<=k && k<this.size()){
+            return _data[k];
+        }
+        System.out.println("ERROR: THE ROW NUMBER MUST BETWEEN 0 and " + (this.size()-1));
+        return null; // REPLACE WITH SOLUTION // REPLACE WITH SOLUTION
     }
 
     @Override
     public boolean equals(Object obj) {
-        return false; // REPLACE WITH SOLUTION
+        if (this == obj) return true;
+        if (!(obj instanceof Row)) return false;
+
+        Row new_row = (Row) obj;
+        if(new_row.size() != this.size()) return false;
+        for (int i=0; i<this.size();i++){
+            if(!new_row._data[i].equals(_data[i])) return false;
+        }
+        return true;
+     // REPLACE WITH SOLUTION
     }
 
     /* NOTE: Whenever you override the .equals() method for a class, you

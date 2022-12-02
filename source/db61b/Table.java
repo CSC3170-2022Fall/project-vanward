@@ -36,6 +36,7 @@ class Table implements Iterable<Row> {
             }
         }
         // FILL IN
+        attributes = columnTitles;
     }
 
     /** A new Table whose columns are give by COLUMNTITLES. */
@@ -56,6 +57,11 @@ class Table implements Iterable<Row> {
     /** Return the number of the column whose title is TITLE, or -1 if
      *  there isn't one. */
     public int findColumn(String title) {
+        for (int i = 0 ; i < attributes.length; i ++ ){
+            if (title.equals (attributes[i] )){
+                return i;
+            }
+        }
         return -1;  // REPLACE WITH SOLUTION
     }
 
@@ -73,6 +79,7 @@ class Table implements Iterable<Row> {
     /** Add ROW to THIS if no equal row already exists.  Return true if anything
      *  was added, false otherwise. */
     public boolean add(Row row) {
+        _rows.add(row);
         return false;   // REPLACE WITH SOLUTION
     }
 
@@ -163,5 +170,6 @@ class Table implements Iterable<Row> {
     /** My rows. */
     private HashSet<Row> _rows = new HashSet<>();
     // FILL IN
+    private String attributes[];
 }
 
