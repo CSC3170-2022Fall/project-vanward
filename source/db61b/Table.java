@@ -35,7 +35,7 @@ class Table implements Iterable<Row> {
                 }
             }
         }
-        // FILL IN
+        column_titles = columnTitles; // FILL IN
     }
 
     /** A new Table whose columns are give by COLUMNTITLES. */
@@ -45,23 +45,28 @@ class Table implements Iterable<Row> {
 
     /** Return the number of columns in this table. */
     public int columns() {
-        return 0;  // REPLACE WITH SOLUTION
+        return column_titles.length ;  // REPLACE WITH SOLUTION
     }
 
     /** Return the title of the Kth column.  Requires 0 <= K < columns(). */
     public String getTitle(int k) {
-        return null;  // REPLACE WITH SOLUTION
+        return column_titles[k];  // REPLACE WITH SOLUTION
     }
 
     /** Return the number of the column whose title is TITLE, or -1 if
      *  there isn't one. */
     public int findColumn(String title) {
-        return -1;  // REPLACE WITH SOLUTION
+        for (int i = 0 ; i < column_titles.length; i ++ ){
+            if (title.equals (column_titles[k] )){
+                return i;
+            }
+        }
+        return -1;// REPLACE WITH SOLUTION
     }
 
     /** Return the number of Rows in this table. */
     public int size() {
-        return 0;  // REPLACE WITH SOLUTION
+        return _rows.size();  // REPLACE WITH SOLUTION
     }
 
     /** Returns an iterator that returns my rows in an unspecfied order. */
@@ -73,7 +78,14 @@ class Table implements Iterable<Row> {
     /** Add ROW to THIS if no equal row already exists.  Return true if anything
      *  was added, false otherwise. */
     public boolean add(Row row) {
-        return false;   // REPLACE WITH SOLUTION
+        Iterator i = this.iterator();
+        while(i.hasNext()) {
+            if(i.next().equals(row)){
+                return false;
+            }
+        }
+        _rows.add(row);
+        return true;   // REPLACE WITH SOLUTION
     }
 
     /** Read the contents of the file NAME.db, and return as a Table.
@@ -128,6 +140,17 @@ class Table implements Iterable<Row> {
 
     /** Print my contents on the standard output. */
     void print() {
+        Row row;
+        Iterator rows_it =_rows.iterator();
+        printArray(column_titles);
+        while(rows_it.hasNext()) {
+            System.out.println();
+            row = (Row) rows_it.next();
+            
+            for (int i = 0; i < column_titles.length; i++){
+                System.out.print(rows_it.get(i) + " ");
+            }
+        }
         // FILL IN
     }
 
