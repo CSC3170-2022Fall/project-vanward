@@ -30,5 +30,4 @@ After thorough discussion, our team made the choice and the specification inform
 
 
 ## Project Abstract
-
-<!-- TODO -->
+This project aims to implement a relational database management system. The DBMS consists of tables with row(s) and column(s), and query language to retrieve relevant information from the database. The project reflects our understanding on the low level working meachanism of database management system. Our implementation includes creation, deletion, updating of tables (more specifically, insertion of rows), and selection of desired information by stating conditions. Other than that, the DBMS will evaluate the sql commands and return relevant messages if errors occur for the purpose of reminding.    
