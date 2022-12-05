@@ -9,6 +9,8 @@ and print an entire Table.
 6. Implement the Row(List<Column> columns, Row... rows) constructor.
 7. Now get single-table select with conditions to work.
 8. Finally, work on the two-table variety of select
+ 
+ Notice Every group member does their work on their own branch at the first stage
 --up to 12/05--  
  Next: Merge the implementation and discuss further implementations
 <!-- TODO -->
