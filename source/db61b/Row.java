@@ -40,7 +40,13 @@ class Row {
      *  consider converting this spec to HTML using the Javadoc command.
      */
     Row(List<Column> columns, Row... rows) {
-        // FILL IN
+        int length = columns.size();
+        _data = new String[length];
+        int idx = 0;
+        for(Column column: columns){
+            _data[idx] = column.getFrom(rows);
+            idx++;
+        }
     }
 
     /** Return my number of columns. */

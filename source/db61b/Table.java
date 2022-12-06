@@ -35,7 +35,7 @@ class Table implements Iterable<Row> {
                 }
             }
         }
-        column_titles = columnTitles; // FILL IN
+        column_titles = columnTitles; 
     }
 
     /** A new Table whose columns are give by COLUMNTITLES. */
@@ -102,7 +102,6 @@ class Table implements Iterable<Row> {
                 throw error("missing header in DB file");
             }
             String[] columnNames = header.split(",");
-            // FILL IN
         } catch (FileNotFoundException e) {
             throw error("could not find %s.db", name);
         } catch (IOException e) {
@@ -128,7 +127,7 @@ class Table implements Iterable<Row> {
             String sep;
             sep = "";
             output = new PrintStream(name + ".db");
-            // FILL THIS IN
+            // FILL THIS IN //@@@
         } catch (IOException e) {
             throw error("trouble writing to %s.db", name);
         } finally {
@@ -151,7 +150,6 @@ class Table implements Iterable<Row> {
                 System.out.print(rows_it.get(i) + " ");
             }
         }
-        // FILL IN
     }
 
     /** Return a new Table whose columns are COLUMNNAMES, selected from
@@ -233,6 +231,5 @@ class Table implements Iterable<Row> {
     /** My rows. */
     private HashSet<Row> _rows = new HashSet<>();
     private String[] column_titles;
-    // FILL IN
 }
 

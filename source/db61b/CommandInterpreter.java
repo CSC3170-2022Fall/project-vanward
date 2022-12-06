@@ -166,7 +166,7 @@ class CommandInterpreter {
         _input.next("table");
         String name = name();
         Table table = tableDefinition();
-        // FILL IN CODE TO EXECUTE THE STATEMENT
+        // FILL IN CODE TO EXECUTE THE STATEMENT //@@@
         _input.next(";");
     }
 
@@ -211,19 +211,19 @@ class CommandInterpreter {
         _input.next("store");
         String name = _input.peek();
         Table table = tableName();
-        // FILL THIS IN
+        // FILL THIS IN //@@@
         System.out.printf("Stored %s.db%n", name);
         _input.next(";");
     }
 
     /** Parse and execute a print statement from the token stream. */
     void printStatement() {
-        // FILL THIS IN
+        // FILL THIS IN //@@@
     }
 
     /** Parse and execute a select statement from the token stream. */
     void selectStatement() {
-        // FILL THIS IN
+        // FILL THIS IN //@@@
     }
 
     /** Parse and execute a table definition, returning the specified
@@ -231,10 +231,10 @@ class CommandInterpreter {
     Table tableDefinition() {
         Table table;
         if (_input.nextIf("(")) {
-            // REPLACE WITH SOLUTION
+            // REPLACE WITH SOLUTION //@@@
             table = null;
         } else {
-            // REPLACE WITH SOLUTION
+            // REPLACE WITH SOLUTION //@@@
             table = null;
         }
         return table;
@@ -243,7 +243,7 @@ class CommandInterpreter {
     /** Parse and execute a select clause from the token stream, returning the
      *  resulting table. */
     Table selectClause() {
-        return null;         // REPLACE WITH SOLUTION
+        return null;         // REPLACE WITH SOLUTION //@@@
 
     }
 
@@ -281,13 +281,13 @@ class CommandInterpreter {
      *  token stream.  This denotes the conjunction (`and') zero
      *  or more Conditions. */
     ArrayList<Condition> conditionClause(Table... tables) {
-        return null;        // REPLACE WITH SOLUTION
+        return null;        // REPLACE WITH SOLUTION //@@@
     }
 
     /** Parse and return a Condition that applies to TABLES from the
      *  token stream. */
     Condition condition(Table... tables) {
-        return null;        // REPLACE WITH SOLUTION
+        return null;        // REPLACE WITH SOLUTION //@@@
     }
 
     /** Advance the input past the next semicolon. */

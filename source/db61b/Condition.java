@@ -17,7 +17,7 @@ class Condition {
      *  are column designators. and RELATION is one of the
      *  strings "<", ">", "<=", ">=", "=", or "!=". */
     Condition(Column col1, String relation, Column col2) {
-        // YOUR CODE HERE
+        // YOUR CODE HERE //@@@
     }
 
     /** A Condition representing COL1 RELATION 'VAL2', where COL1 is
@@ -34,7 +34,7 @@ class Condition {
      *  my columns are selected, returns the result of performing the test I
      *  denote. */
     boolean test(Row... rows) {
-        // REPLACE WITH SOLUTION
+        // REPLACE WITH SOLUTION //@@@
         return false;
     }
 
@@ -53,5 +53,5 @@ class Condition {
     private Column _col1, _col2;
     /** Second operand, if literal (otherwise null). */
     private String _val2;
-    // ADD ADDITIONAL FIELDS HERE
+    // ADD ADDITIONAL FIELDS HERE //@@@
 }

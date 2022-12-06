@@ -21,5 +21,5 @@ class Database {
         }
         Hmap.put(name,table);
     }
-    private Hashmap<String, Table> Hmap;
+    private HashMap<String, Table> Hmap;
 }
