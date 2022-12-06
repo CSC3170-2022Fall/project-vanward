@@ -1,26 +1,16 @@
-// This is a SUGGESTED skeleton for a class that contains the Tables your
-// program manipulates.  You can throw this away if you want, but it is a good
-// idea to try to understand it first.  Our solution changes about 6
-// lines in this skeleton.
-
-// Comments that start with "//" are intended to be removed from your
-// solutions.
 package db61b;
-
-// FILL IN (WITH IMPORTS)?
-
-/** A collection of Tables, indexed by name.
- *  @author */
+import java.util.HashMap;
 class Database {
     /** An empty database. */
     public Database() {
-        // FILL IN
+        Hmap = new HashMap<String, Table>();
     }
 
     /** Return the Table whose name is NAME stored in this database, or null
      *  if there is no such table. */
     public Table get(String name) {
-        return null;             // REPLACE WITH SOLUTION
+        Table Ntable = Hmap.get(name);
+        return Ntable;
     }
 
     /** Set or replace the table named NAME in THIS to TABLE.  TABLE and
@@ -29,8 +19,7 @@ class Database {
         if (name == null || table == null) {
             throw new IllegalArgumentException("null argument");
         }
-        // FILL IN
+        Hmap.put(name,table);
     }
-
-    // FILL IN?
+    private Hashmap<String, Table> Hmap;
 }
