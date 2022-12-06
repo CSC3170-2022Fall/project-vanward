@@ -158,7 +158,25 @@ class Table implements Iterable<Row> {
      *  rows of this table that satisfy CONDITIONS. */
     Table select(List<String> columnNames, List<Condition> conditions) {
         Table result = new Table(columnNames);
-        // FILL IN
+        Iterator<Row> eachRow = _rows.iterator();
+        while (eachRow.hasNext()) {
+            Row currentRow = eachRow.next();
+
+            List<String> temp = new ArrayList<String>();
+            for (int i = 0; i < columnNames.size(); i++) {
+                int numOfCol = this.findColumn(columnNames.get(i));
+                if (numOfCol != -1 && Condition.test(conditions, currentRow)) {
+                    String rowValue = currentRow.get(numOfCol);
+                    temp.add(rowValue);
+                }
+            }
+
+            String[] bar = temp.toArray(new String[columnNames.size()]);
+            Row finalRow = new Row(bar);
+            if (!(finalRow.get(0) == null)) {
+                result.add(finalRow);
+            }
+        }
         return result;
     }
 
@@ -167,9 +185,31 @@ class Table implements Iterable<Row> {
      *  on all columns with identical names and satisfy CONDITIONS. */
     Table select(Table table2, List<String> columnNames,
                  List<Condition> conditions) {
+        List<Column> incommon = new ArrayList<Column>();
+        List<Column> inCommon = new ArrayList<Column>();
         Table result = new Table(columnNames);
-        // FILL IN
-        return result;
+
+        for (int r = 0; r < this.columns(); r++) {
+            for (int k = 0; k < table2.columns(); k++) {
+
+                if (table2.getTitle(k).equals(this.getTitle(r))) {
+                    Column blah2 = new Column(table2.getTitle(k), table2);
+                    Column blah1 = new Column(this.getTitle(r), this);
+                    inCommon.add(blah2);
+                    incommon.add(blah1);
+                }
+            }
+        }
+        for (Row oneTime: _rows) {
+            for (Row twoTime: _rows) {
+                if (equijoin(incommon, inCommon, oneTime, twoTime)) {
+                    Row almostDone = new Row(incommon, oneTime, twoTime);
+                    result.add(almostDone);
+                }
+            }
+        }
+        Table theResult = result.select(columnNames, conditions);
+        return theResult;
     }
 
     /** Return true if the columns COMMON1 from ROW1 and COMMON2 from
@@ -180,7 +220,14 @@ class Table implements Iterable<Row> {
      *  from those tables. */
     private static boolean equijoin(List<Column> common1, List<Column> common2,
                                     Row row1, Row row2) {
-        return true; // REPLACE WITH SOLUTION
+        for (int i = 0; i < common1.size(); i++) {
+            Column column1 = common1.get(i);
+            Column column2 = common2.get(i);
+            if (!(column1.getFrom(row1).equals(column2.getFrom(row2)))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /** My rows. */
