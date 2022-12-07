@@ -220,7 +220,7 @@ class CommandInterpreter {
     void printStatement() {
         _input.next("print");
         String name = _input.peek();
-        Tabel tabel = tableName();
+        Tabel table = tableName();
         _input.next(";");
         System.out.printf("Contents of %S:%N, name);
         table.print();
