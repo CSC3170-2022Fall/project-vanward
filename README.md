@@ -12,14 +12,14 @@ This is our implementation for the course project of CSC3170, 2022 Fall, CUHK(SZ
 
 Our team consists of the following members, listed in the table below (the team leader is shown in the first row, and is marked with 🚩 behind his/her name):
 
-| Student ID | Student Name | GitHub Account (in Email) |
-| ---------- | ------------ | ------------------------- |
-| 120090194  | 桂驰 🚩      | 120090194@link.cuhk.edu.cn       |
-| 120090521  | 庞嘉扬         | 120090521@link.cuhk.edu.cn         |
-| 120090117  | 赵思远         | 120090117@link.cuhk.edu.cn        |
-| 120090671  | 从御政         | 120090671@link.cuhk.edu.cn        |
-| 120090026  | 孙思鹏         | 120090026@link.cuhk.edu.cn        |
-| 121040084  | 钟嘉乐        | 121040084@link.cuhk.edu.cn       |
+| Student ID | Student Name | GitHub Account (in Email)  | GitHub Username |
+| ---------- | ------------ | -------------------------  | --------------- |
+| 120090194  | 桂驰 🚩      | 120090194@link.cuhk.edu.cn |  |
+| 120090521  | 庞嘉扬        | 120090521@link.cuhk.edu.cn |  | 
+| 120090117  | 赵思远        | 120090117@link.cuhk.edu.cn |  |
+| 120090671  | 从御政        | 120090671@link.cuhk.edu.cn |  |
+| 120090026  | 孙思鹏        | 120090026@link.cuhk.edu.cn |  |
+| 121040084  | 钟嘉乐        | 121040084@link.cuhk.edu.cn | MikeZhong21    |
 
 ## Project Specification
 
