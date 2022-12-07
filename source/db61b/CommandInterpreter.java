@@ -230,21 +230,49 @@ class CommandInterpreter {
      *  table. */
     Table tableDefinition() {
         Table table;
-        if (_input.nextIf("(")) {
-            // REPLACE WITH SOLUTION //@@@
-            table = null;
-        } else {
-            // REPLACE WITH SOLUTION //@@@
-            table = null;
+        if (_input.nextIf("(")) { // case: create table <table name> ( <column name>, ) 
+            List<string> column_titles = new List<>();
+            // obtain column names
+            do{
+                column_titles.add(columnName());   
+            }while(_input.nextIf(","));
+            _input.next(")");
+            // obtain table according one of table constructors
+            table = new Table(column_titles);
+        } else { // case: create table <table name> as <select clause>
+            _input.next("as");
+            table = selectClause();
         }
         return table;
     }
 
     /** Parse and execute a select clause from the token stream, returning the
      *  resulting table. */
-    Table selectClause() {
-        return null;         // REPLACE WITH SOLUTION //@@@
-
+    Table selectClause() {  //select <column name>, from <tables> <condition clause>
+        _input.next("select");
+        Table table;
+        // obtain selected column titles
+        List<String> column_titles = new List<>();
+        do {
+            column_titles.add(columnName());
+        } while (_input.nextIf(","));
+        // obtain target tables (one or two)
+        _input.next("from");
+        Table table1 = tableName();
+        Table table2 = null;
+        if (_input.nextIf(",")) {
+            table2 = tableName();
+        }
+        // obtain conditions
+        ArrayList<Condition> conditions;
+        if (table2) {
+            conditions = conditionClause(table1, table2);
+            return table1.select(table2, column_titles, conditions);
+        }
+        else {
+            conditions = conditionClause(table1);
+            return table1.select(column_titles, conditions)
+        }
     }
 
     /** Parse and return a valid name (identifier) from the token stream. */
