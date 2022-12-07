@@ -17,7 +17,10 @@ class Condition {
      *  are column designators. and RELATION is one of the
      *  strings "<", ">", "<=", ">=", "=", or "!=". */
     Condition(Column col1, String relation, Column col2) {
-        // YOUR CODE HERE //@@@
+        _col1 = col1;
+        _col2 = col2;
+        _relation = relation;
+        flag = false;
     }
 
     /** A Condition representing COL1 RELATION 'VAL2', where COL1 is
@@ -28,13 +31,52 @@ class Condition {
     Condition(Column col1, String relation, String val2) {
         this(col1, relation, (Column) null);
         _val2 = val2;
+        flag = true;
     }
 
     /** Assuming that ROWS are rows from the respective tables from which
      *  my columns are selected, returns the result of performing the test I
      *  denote. */
     boolean test(Row... rows) {
-        // REPLACE WITH SOLUTION //@@@
+        String c1, c2;
+        if (flag) {
+            c1 = _col1.getFrom(rows);
+            c2 = _col2.getFrom(rows);
+        }
+        else {
+            c1 = _col1.getFrom(rows);
+            c2 = _val2;
+        }
+        if (_relation.equals("<")) {
+            if (c1.compareTo(c2) < 0) {
+                return true;
+            }
+        }
+        if (_relation.equals(">")) {
+            if (c1.compareTo(c2) > 0) {
+                return true;
+            }
+        }
+        if (_relation.equals("<=")) {
+            if (c1.compareTo(c2) <= 0) {
+                return true;
+            }
+        }
+        if (_relation.equals(">=")) {
+            if (c1.compareTo(c2) >= 0) {
+                return true;
+            }
+        }
+        if (_relation.equals("=")) {
+            if (c1.compareTo(c2) == 0) {
+                return true;
+            }
+        }
+        if (_relation.equals("!=")) {
+            if (c1.compareTo(c2) != 0) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -53,5 +95,8 @@ class Condition {
     private Column _col1, _col2;
     /** Second operand, if literal (otherwise null). */
     private String _val2;
-    // ADD ADDITIONAL FIELDS HERE //@@@
+    // ADD ADDITIONAL FIELDS HERE
+    private String _relation;
+
+    private boolean flag;
 }
