@@ -218,12 +218,20 @@ class CommandInterpreter {
 
     /** Parse and execute a print statement from the token stream. */
     void printStatement() {
-        // FILL THIS IN //@@@
+        _input.next("print");
+        String name = _input.peek();
+        Tabel tabel = tabelName();
+        _input.next(";");
+        System.out.printf("Contents of %S:%N, name);
+        table.print();
     }
 
     /** Parse and execute a select statement from the token stream. */
     void selectStatement() {
-        // FILL THIS IN //@@@
+        Table table = selectClause();
+        _input.next(";");
+        System.out.println("Select result:");
+        table.print();
     }
 
     /** Parse and execute a table definition, returning the specified
