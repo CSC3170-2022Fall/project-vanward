@@ -303,7 +303,18 @@ class CommandInterpreter {
     /** Parse and return a Condition that applies to TABLES from the
      *  token stream. */
     Condition condition(Table... tables) {
-        return null;        // REPLACE WITH SOLUTION //@@@
+        Column column1 = new Column(_input.next(Tokenizer.IDENTIFIER), tables);
+        String relation = _input.next(_input.next(Tokenizer.RELATION));
+        Condition condition;
+        if(_input.nextIs(Tokenizer.IDENTIFIER)){
+            Column column2 = new Column(_input.next(Tokenizer.IDENTIFIER), tables);
+            condition = new Condition(column1, relation, column2);    
+        }
+        else{
+            String value = _input.next(Tokenizer.LITERAL);
+            condition = new Condition(column1, relation, value);
+        }
+        return condition;
     }
 
     /** Advance the input past the next semicolon. */
