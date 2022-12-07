@@ -281,7 +281,23 @@ class CommandInterpreter {
      *  token stream.  This denotes the conjunction (`and') zero
      *  or more Conditions. */
     ArrayList<Condition> conditionClause(Table... tables) {
-        return null;        // REPLACE WITH SOLUTION //@@@
+        ArrayList<Condition> conditions = new ArrayList<>();
+        do{
+            Column column1 = new Column(_input.next(Tokenizer.IDENTIFIER), tables);
+            String relation = _input.next(_input.next(Tokenizer.RELATION));
+            if(_input.nextIs(Tokenizer.IDENTIFIER)){
+                Column column2 = new Column(_input.next(Tokenizer.IDENTIFIER), tables);
+                Condition condition = new Condition(column1, relation, column2);
+                conditions.add(condition);
+            }
+            else if(_input.nextIs(Tokenizer.LITERAL)){
+                String value = _input.next(Tokenizer.LITERAL);
+                Condition condition = new Condition(column1, relation, value);
+                conditions.add(condition);
+            }
+        }
+        while(_input.nextIf("and"));
+        return conditions;
     }
 
     /** Parse and return a Condition that applies to TABLES from the
