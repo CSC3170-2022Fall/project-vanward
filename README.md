@@ -17,7 +17,7 @@ Our team consists of the following members, listed in the table below (the team 
 | 120090194  | 桂驰 🚩      | 120090194@link.cuhk.edu.cn |  Penguin-N      |
 | 120090521  | 庞嘉扬        | 120090521@link.cuhk.edu.cn | [PJYasuna](https://github.com/PJYasuna)       |
 | 120090117  | 赵思远        | 120090117@link.cuhk.edu.cn |  ZhaoSiyuan120090117|
-| 120090671  | 从御政        | 120090671@link.cuhk.edu.cn |  |
+| 120090671  | 从御政        | 120090671@link.cuhk.edu.cn |  @Paligi|
 | 120090026  | 孙思鹏        | 120090026@link.cuhk.edu.cn |  |
 | 121040084  | 钟嘉乐        | 121040084@link.cuhk.edu.cn | MikeZhong21    |
 

@@ -102,6 +102,15 @@ class Table implements Iterable<Row> {
                 throw error("missing header in DB file");
             }
             String[] columnNames = header.split(",");
+            table  = new Table(columnNames);
+            
+            while (header != null){
+                columnNames = header.split(",");
+                Row row = new Row(columnNames);
+                table.add(row);
+                header = input.readLine();
+
+            }
         } catch (FileNotFoundException e) {
             throw error("could not find %s.db", name);
         } catch (IOException e) {
@@ -127,7 +136,22 @@ class Table implements Iterable<Row> {
             String sep;
             sep = "";
             output = new PrintStream(name + ".db");
-            // FILL THIS IN //@@@
+            int i;
+            for( i = 0; i < columns() - 1; i++){
+                output.print(getTitle(i));
+                output.print(",");
+                
+            }
+            output.println(getTitle(i));
+
+            for (Row value: _rows) {
+                int j;
+                for (j = 0; j < value.size() - 1; j++) {
+                    output.print(value.get(j) + ",");
+                }
+                output.println(value.get(j));
+            }
+            
         } catch (IOException e) {
             throw error("trouble writing to %s.db", name);
         } finally {
@@ -139,16 +163,11 @@ class Table implements Iterable<Row> {
 
     /** Print my contents on the standard output. */
     void print() {
-        Row row;
-        Iterator rows_it =_rows.iterator();
-        printArray(column_titles);
-        while(rows_it.hasNext()) {
-            System.out.println();
-            row = (Row) rows_it.next();
-            
-            for (int i = 0; i < column_titles.length; i++){
-                System.out.print(rows_it.get(i) + " ");
+        for (Row value: _rows) {
+            for (int j = 0; j < value.size(); j++) {
+                System.out.print(" " + value.get(j));
             }
+            System.out.println();
         }
     }
 
