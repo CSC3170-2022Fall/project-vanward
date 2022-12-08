@@ -220,9 +220,9 @@ class CommandInterpreter {
     void printStatement() {
         _input.next("print");
         String name = _input.peek();
-        Tabel table = tableName();
+        Table table = tableName();
         _input.next(";");
-        System.out.printf("Contents of %S:%N, name);
+        System.out.printf("Contents of %S:%N", name);
         table.print();
     }
 
@@ -239,7 +239,7 @@ class CommandInterpreter {
     Table tableDefinition() {
         Table table;
         if (_input.nextIf("(")) { // case: create table <table name> ( <column name>, ) 
-            List<string> column_titles = new List<>();
+            ArrayList<String> column_titles = new ArrayList<>();
             // obtain column names
             do{
                 column_titles.add(columnName());   
@@ -258,9 +258,8 @@ class CommandInterpreter {
      *  resulting table. */
     Table selectClause() {  //select <column name>, from <tables> <condition clause>
         _input.next("select");
-        Table table;
         // obtain selected column titles
-        List<String> column_titles = new List<>();
+        ArrayList<String> column_titles = new ArrayList<>();
         do {
             column_titles.add(columnName());
         } while (_input.nextIf(","));
@@ -273,13 +272,13 @@ class CommandInterpreter {
         }
         // obtain conditions
         ArrayList<Condition> conditions;
-        if (table2) {
+        if (table2!=null) {
             conditions = conditionClause(table1, table2);
             return table1.select(table2, column_titles, conditions);
         }
         else {
             conditions = conditionClause(table1);
-            return table1.select(column_titles, conditions)
+            return table1.select(column_titles, conditions);
         }
     }
 
