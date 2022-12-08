@@ -320,7 +320,7 @@ class CommandInterpreter {
         ArrayList<Condition> conditions = new ArrayList<>();
         do{
             Column column1 = new Column(_input.next(Tokenizer.IDENTIFIER), tables);
-            String relation = _input.next(_input.next(Tokenizer.RELATION));
+            String relation = _input.next(Tokenizer.RELATION);
             if(_input.nextIs(Tokenizer.IDENTIFIER)){
                 Column column2 = new Column(_input.next(Tokenizer.IDENTIFIER), tables);
                 Condition condition = new Condition(column1, relation, column2);
@@ -332,15 +332,16 @@ class CommandInterpreter {
                 conditions.add(condition);
             }
         }
-        while(_input.nextIf("and"));
+        while(_input.nextIf("and") || _input.nextIf("AND"));
         return conditions;
     }
 
     /** Parse and return a Condition that applies to TABLES from the
      *  token stream. */
+    /*
     Condition condition(Table... tables) {
         Column column1 = new Column(_input.next(Tokenizer.IDENTIFIER), tables);
-        String relation = _input.next(_input.next(Tokenizer.RELATION));
+        String relation = _input.next(Tokenizer.RELATION);
         Condition condition;
         if(_input.nextIs(Tokenizer.IDENTIFIER)){
             Column column2 = new Column(_input.next(Tokenizer.IDENTIFIER), tables);
@@ -352,6 +353,7 @@ class CommandInterpreter {
         }
         return condition;
     }
+    */
 
     /** Advance the input past the next semicolon. */
     void skipCommand() {
