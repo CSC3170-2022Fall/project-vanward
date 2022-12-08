@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -207,7 +207,8 @@ class Table implements Iterable<Row> {
         List<Column> incommon = new ArrayList<Column>();
         List<Column> inCommon = new ArrayList<Column>();
         Table result = new Table(columnNames);
-
+        ArrayList<Column> result_columns = new ArrayList<Column>();
+        for(String name : columnNames) result_columns.add(new Column(name, this, table2));
         for (int r = 0; r < this.columns(); r++) {
             for (int k = 0; k < table2.columns(); k++) {
 
@@ -219,16 +220,21 @@ class Table implements Iterable<Row> {
                 }
             }
         }
+        Iterator<Row> i2 = table2.iterator();
+        while (i2.hasNext()) {
+            _rows2.add(i2.next());
+        }
+
         for (Row oneTime: _rows) {
-            for (Row twoTime: _rows) {
-                if (equijoin(incommon, inCommon, oneTime, twoTime)) {
-                    Row almostDone = new Row(incommon, oneTime, twoTime);
+            for (Row twoTime: _rows2) {
+                if (equijoin(incommon, inCommon, oneTime, twoTime) && Condition.test(conditions, oneTime,twoTime)) {
+                    Row almostDone = new Row(result_columns, oneTime, twoTime);
                     result.add(almostDone);
                 }
             }
         }
-        Table theResult = result.select(columnNames, conditions);
-        return theResult;
+        // Table theResult = result.select(columnNames, conditions);
+        return result;
     }
 
     /** Return true if the columns COMMON1 from ROW1 and COMMON2 from
@@ -250,7 +256,8 @@ class Table implements Iterable<Row> {
     }
 
     /** My rows. */
-    private HashSet<Row> _rows = new HashSet<>();
+    private LinkedHashSet<Row> _rows = new LinkedHashSet<>();
+    private LinkedHashSet<Row> _rows2 = new LinkedHashSet<>();
     private String[] column_titles;
 }
 
