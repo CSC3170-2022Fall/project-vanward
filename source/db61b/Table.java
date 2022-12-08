@@ -78,7 +78,7 @@ class Table implements Iterable<Row> {
     /** Add ROW to THIS if no equal row already exists.  Return true if anything
      *  was added, false otherwise. */
     public boolean add(Row row) {
-        Iterator i = this.iterator();
+        Iterator<Row> i = this.iterator();
         while(i.hasNext()) {
             if(i.next().equals(row)){
                 return false;
@@ -163,11 +163,13 @@ class Table implements Iterable<Row> {
 
     /** Print my contents on the standard output. */
     void print() {
-        for (Row value: _rows) {
-            for (int j = 0; j < value.size(); j++) {
-                System.out.print(" " + value.get(j));
-            }
-            System.out.println();
+        Iterator<Row> i = _rows.iterator();
+        while (i.hasNext()) {
+            Row value = i.next();
+        for (int j = 0; j <value.size(); j++) {
+            System.out.print(" " + value.get(j));
+        }
+        System.out.println();
         }
     }
 

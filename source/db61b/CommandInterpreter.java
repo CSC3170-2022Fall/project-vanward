@@ -222,7 +222,7 @@ class CommandInterpreter {
         String name = _input.peek();
         Table table = tableName();
         _input.next(";");
-        System.out.printf("Contents of %S:%N", name);
+        System.out.printf("Contents of %s:%n", name);
         table.print();
     }
 
@@ -327,7 +327,7 @@ class CommandInterpreter {
                     conditions.add(condition);
                 }
                 else if(_input.nextIs(Tokenizer.LITERAL)){
-                    String value = _input.next(Tokenizer.LITERAL);
+                    String value = literal();
                     Condition condition = new Condition(column1, relation, value);
                     conditions.add(condition);
                 }

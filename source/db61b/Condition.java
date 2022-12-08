@@ -20,7 +20,7 @@ class Condition {
         _col1 = col1;
         _col2 = col2;
         _relation = relation;
-        flag = false;
+        flag = true;
     }
 
     /** A Condition representing COL1 RELATION 'VAL2', where COL1 is
@@ -31,7 +31,7 @@ class Condition {
     Condition(Column col1, String relation, String val2) {
         this(col1, relation, (Column) null);
         _val2 = val2;
-        flag = true;
+        flag = false;
     }
 
     /** Assuming that ROWS are rows from the respective tables from which
