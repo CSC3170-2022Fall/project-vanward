@@ -175,28 +175,27 @@ class Table implements Iterable<Row> {
 
     /** Return a new Table whose columns are COLUMNNAMES, selected from
      *  rows of this table that satisfy CONDITIONS. */
-    Table select(List<String> columnNames, List<Condition> conditions) {
+   Table select(List<String> columnNames, List<Condition> conditions) {
         Table result = new Table(columnNames);
-        Iterator<Row> eachRow = _rows.iterator();
-        while (eachRow.hasNext()) {
-            Row currentRow = eachRow.next();
-
-            List<String> temp = new ArrayList<String>();
-            for (int i = 0; i < columnNames.size(); i++) {
-                int numOfCol = this.findColumn(columnNames.get(i));
-                if (numOfCol != -1 && Condition.test(conditions, currentRow)) {
-                    String rowValue = currentRow.get(numOfCol);
-                    temp.add(rowValue);
-                }
-            }
-
-            String[] bar = temp.toArray(new String[columnNames.size()]);
-            Row finalRow = new Row(bar);
-            if (!(finalRow.get(0) == null)) {
-                result.add(finalRow);
+        ArrayList<Column> lst = new ArrayList<Column>();
+        for (String colN : columnNames) {
+            lst.add(new Column(colN, this));
+        }
+        for (Row row : this) {
+            if (conditions_match(conditions, row)) {
+                result.add(new Row(lst, row));
             }
         }
         return result;
+    }
+
+    boolean conditions_match(List<Condition> conditions, Row... rows) {
+        for (Condition con : conditions) {
+            if (!con.test(rows)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /** Return a new Table whose columns are COLUMNNAMES, selected
@@ -220,13 +219,10 @@ class Table implements Iterable<Row> {
                 }
             }
         }
-        Iterator<Row> i2 = table2.iterator();
-        while (i2.hasNext()) {
-            _rows2.add(i2.next());
-        }
 
-        for (Row oneTime: _rows) {
-            for (Row twoTime: _rows2) {
+
+        for (Row oneTime: this) {
+            for (Row twoTime: table2) {
                 if (equijoin(incommon, inCommon, oneTime, twoTime) && Condition.test(conditions, oneTime,twoTime)) {
                     Row almostDone = new Row(result_columns, oneTime, twoTime);
                     result.add(almostDone);
@@ -257,7 +253,7 @@ class Table implements Iterable<Row> {
 
     /** My rows. */
     private LinkedHashSet<Row> _rows = new LinkedHashSet<>();
-    private LinkedHashSet<Row> _rows2 = new LinkedHashSet<>();
     private String[] column_titles;
 }
+
 
