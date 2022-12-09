@@ -21,5 +21,11 @@ class Database {
         }
         Hmap.put(name,table);
     }
+
+    // Delete a table
+    public void delete(String name) {
+        Hmap.remove(name);
+        System.out.printf("Delete table %s\n",name);
+    }    
     private HashMap<String, Table> Hmap;
 }

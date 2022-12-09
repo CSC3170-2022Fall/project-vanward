@@ -88,6 +88,11 @@ class Table implements Iterable<Row> {
         return true;   // REPLACE WITH SOLUTION
     }
 
+    public boolean remove(Row row){
+        _rows.remove(row);
+        return true;
+    }
+
     /** Read the contents of the file NAME.db, and return as a Table.
      *  Format errors in the .db file cause a DBException. */
     static Table readTable(String name) {
@@ -103,7 +108,7 @@ class Table implements Iterable<Row> {
             }
             String[] columnNames = header.split(",");
             table  = new Table(columnNames);
-            
+            header = input.readLine();            
             while (header != null){
                 columnNames = header.split(",");
                 Row row = new Row(columnNames);

@@ -40,6 +40,10 @@ class Column {
     String getFrom(Row... rows) {
         return rows[_table].get(_column);
     }
+    
+    Integer get_columb_index(){
+        return _column;
+    }
 
     /** Column name denoted by THIS. */
     private String _name;
