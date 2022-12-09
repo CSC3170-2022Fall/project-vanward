@@ -18,7 +18,7 @@ Our team consists of the following members, listed in the table below (the team 
 | 120090521  | 庞嘉扬        | 120090521@link.cuhk.edu.cn | @[PJYasuna](https://github.com/PJYasuna)       |
 | 120090117  | 赵思远        | 120090117@link.cuhk.edu.cn |  @[ZhaoSiyuan120090117](https://github.com/ZhaoSiyuan120090117)|
 | 120090671  | 从御政        | 120090671@link.cuhk.edu.cn |  @[Paligi](https://github.com/Paligi)|
-| 120090026  | 孙思鹏        | 120090026@link.cuhk.edu.cn |  |
+| 120090026  | 孙思鹏        | 120090026@link.cuhk.edu.cn |  @[Sun8731](https://github.com/Sun8731)           |
 | 121040084  | 钟嘉乐        | 121040084@link.cuhk.edu.cn | @[MikeZhong21](https://github.com/MikeZhong21)    |
 
 ## Project Specification
