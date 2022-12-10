@@ -18,5 +18,6 @@ Notice Every group member does their work on their own branch at the first stage
  2. Implement "group by", "order by" commands.
  3. Improve the visualization of the table.
  4. Implement "column_minus" commands.
- --up to 12/09--
+ --up to 12/10--
 <!-- TODO -->
+ We hope to deliver the presentation on Tuesday
