@@ -276,7 +276,7 @@ class CommandInterpreter {
         return table;
     }
 
-    Row table_aggregate_function(Table ori_table, ArrayList<String> titles, ArrayList<String> types){
+   Row table_aggregate_function(Table ori_table, ArrayList<String> titles, ArrayList<String> types){
         int titles_length = titles.size();
         String[] values = new String[titles_length];
         for(int i = 0; i < titles_length; ++i)  values[i] = null;
@@ -310,14 +310,30 @@ class CommandInterpreter {
                     String tmp = column.getFrom(row);
                     if(values[i] == null)  values[i] = tmp;
                     else{ 
-                        if(tmp.compareTo(values[i]) < 0) values[i] = tmp;
+                        try{
+                            double value = Double.parseDouble(values[i]);
+                            double tmp_value = Double.parseDouble(tmp);
+
+                            if(tmp_value < value)   values[i] = tmp;
+                        }
+                        catch(Exception e){
+                            if(tmp.compareTo(values[i]) < 0) values[i] = tmp;
+                        }
                     }
                 }
                 else if(types.get(i).equals("max")){
                     String tmp = column.getFrom(row);
                     if(values[i] == null)  values[i] = tmp;
                     else{ 
-                        if(tmp.compareTo(values[i]) > 0) values[i] = tmp;
+                        try{
+                            double value = Double.parseDouble(values[i]);
+                            double tmp_value = Double.parseDouble(tmp);
+
+                            if(tmp_value > value)   values[i] = tmp;
+                        }
+                        catch(Exception e){
+                            if(tmp.compareTo(values[i]) > 0) values[i] = tmp;
+                        }
                     }
                 }
                 else if(types.get(i).equals("count")){
