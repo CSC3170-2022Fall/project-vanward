@@ -2,7 +2,7 @@ Group,Country,Continent,Wins,Draws,Loss,Goals_For,Goals_against,Points
 A,Netherlands,Europe,2,1,0,5,1,7
 A,Senegal,Africa,2,0,1,5,4,6
 A,Ecuador,South_America,1,1,1,4,3,4
-A,Qater,Asia,0,0,3,1,7,0
+A,Qatar,Asia,0,0,3,1,7,0
 B,England,Europe,2,1,0,9,2,7
 B,USA,North_America,1,2,0,2,1,5
 B,Iran,Asia,1,0,2,4,7,3
