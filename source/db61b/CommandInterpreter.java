@@ -441,7 +441,6 @@ class CommandInterpreter {
                         try{
                             double value = Double.parseDouble(values[i]);
                             double tmp_value = Double.parseDouble(tmp);
-
                             if(tmp_value > value)   values[i] = tmp;
                         }
                         catch(Exception e){
@@ -567,18 +566,35 @@ class CommandInterpreter {
             if(_input.nextIf("desc")){
                 Column col = new Column(column_name, select_table);
                 while(select_table.size() != 0){
-                    String max = null;
                     Row max_row = null;
-                    for(Row row : select_table){
-                        if(max == null){
-                            max = col.getFrom(row);
-                            max_row = row;
-                            continue;
-                        }
-                        if(max.compareTo(col.getFrom(row)) < 0){
-                            max = col.getFrom(row);
-                            max_row = row;
-                        }
+                    try{
+                        Double max = null;
+                        String value = null;
+                        for(Row row : select_table){
+                            value = col.getFrom(row);
+                            if(max == null){
+                                max = Double.valueOf(value);
+                                max_row = row;
+                                continue;
+                            }
+                            if(max < Double.valueOf(value)){
+                                max = Double.valueOf(value);
+                                max_row = row;
+                            }
+                        }   
+                    }catch(Exception e){
+                        String max = null;
+                        for(Row row : select_table){
+                            if(max == null){
+                                max = col.getFrom(row);
+                                max_row = row;
+                                continue;
+                            }
+                            if(max.compareTo(col.getFrom(row)) < 0){
+                                max = col.getFrom(row);
+                                max_row = row;
+                            }
+                        }   
                     }
                     select_table.remove(max_row);
                     order_table.add(max_row);
@@ -588,18 +604,35 @@ class CommandInterpreter {
                 _input.nextIf("asc");
                 Column col = new Column(column_name, select_table);
                 while(select_table.size() != 0){
-                    String min = null;
                     Row min_row = null;
-                    for(Row row : select_table){
-                        if(min==null){
-                            min = col.getFrom(row);
-                            min_row = row;
-                            continue;
-                        }
-                        if(min.compareTo(col.getFrom(row)) > 0){
-                            min = col.getFrom(row);
-                            min_row = row;
-                        }
+                    try{
+                        Double min = null;
+                        String value = null;
+                        for(Row row : select_table){
+                            value = col.getFrom(row);
+                            if(min == null){
+                                min = Double.valueOf(value);
+                                min_row = row;
+                                continue;
+                            }
+                            if(min > Double.valueOf(value)){
+                                min = Double.valueOf(value);
+                                min_row = row;
+                            }
+                        }   
+                    }catch(Exception e){
+                        String min = null;
+                        for(Row row : select_table){
+                            if(min == null){
+                                min = col.getFrom(row);
+                                min_row = row;
+                                continue;
+                            }
+                            if(min.compareTo(col.getFrom(row)) > 0){
+                                min = col.getFrom(row);
+                                min_row = row;
+                            }
+                        }   
                     }
                     select_table.remove(min_row);
                     order_table.add(min_row);
