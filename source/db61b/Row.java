@@ -91,12 +91,8 @@ class Row {
         return Arrays.hashCode(_data);
     }
 
-    public ArrayList<String> get_data(){
-        ArrayList<String> data = new ArrayList<>();
-        for(String tem:_data){
-            data.add(tem);
-        };
-        return data;
+    public String[] get_data(){
+        return _data;
     } 
 
     /** Contents of this row. */

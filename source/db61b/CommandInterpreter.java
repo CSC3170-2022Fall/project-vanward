@@ -164,34 +164,109 @@ class CommandInterpreter {
         case "column_plus":
             columnPlusStatement();
             break;
+        case "column_minus":
+            columnMinusStatement();
+            break;
         default:
             throw error("unrecognizable command");
         }
         return true;
     }
 
+    private static String[] insert(String[] arr, String... str) {
+        int size = arr.length; 
+        int newSize = size + str.length; 
+        
+        String[] tmp = new String[newSize]; 
+        for (int i = 0; i < size; i++) { 
+            tmp[i] = arr[i];
+        }
+        for (int i = size; i < newSize; i++) {
+            tmp[i] = str[i - size];
+        } 
+        return tmp; 
+    }
+
     // Column Plus
     void columnPlusStatement(){
         _input.next("column_plus");
-        _input.next("from");
         String table_name = name();
         Table table = _database.get(table_name);
+        _input.next(":");
         String col_1_name = name();
         _input.next("and");
         String col_2_name = name();
         _input.next("to");
         String col_new = name();
-        Table new_table = columnPlusCluase();
+        Table new_table = columnPlusCluase(table, col_1_name, col_2_name, col_new);
         _database.put(table_name, new_table);
+        new_table.print();
+        _input.next(";");
     }
 
     // column puls function
     Table columnPlusCluase(Table pre_table, String col_1_name, String col_2_name, String col_new){
-        ArrayList list = new ArrayList(new String[] { “aaa”, “bbb” });
         String[] new_column_titles = pre_table.get_column_titles();
-        Table new_table = new Table(null)
+        new_column_titles = insert(new_column_titles, col_new);
+        Table new_table = new Table(new_column_titles);
+        Column column1 = new Column(col_1_name, pre_table);
+        Column column2 = new Column(col_2_name, pre_table);
+        for(Row row : pre_table){
+            String[] data = row.get_data();
+            try{
+                Double column1_value = Double.parseDouble(column1.getFrom(row));
+                Double column2_value = Double.parseDouble(column2.getFrom(row));
+                String new_column_value = String.valueOf(column1_value+column2_value);
+                data = insert(data, new_column_value);
+                Row new_row = new Row(data);
+                new_table.add(new_row);
+            }catch(Exception e){
+                throw error("Plus data type false.");
+            }
+        }
+        return new_table;
     }
 
+
+    // Column PMinus
+    void columnMinusStatement(){
+        _input.next("column_minus");
+        String table_name = name();
+        Table table = _database.get(table_name);
+        _input.next(":");
+        String col_1_name = name();
+        _input.next("and");
+        String col_2_name = name();
+        _input.next("to");
+        String col_new = name();
+        Table new_table = columnMinusCluase(table, col_1_name, col_2_name, col_new);
+        _database.put(table_name, new_table);
+        new_table.print();
+        _input.next(";");
+    }
+
+    // column minus function
+    Table columnMinusCluase(Table pre_table, String col_1_name, String col_2_name, String col_new){
+        String[] new_column_titles = pre_table.get_column_titles();
+        new_column_titles = insert(new_column_titles, col_new);
+        Table new_table = new Table(new_column_titles);
+        Column column1 = new Column(col_1_name, pre_table);
+        Column column2 = new Column(col_2_name, pre_table);
+        for(Row row : pre_table){
+            String[] data = row.get_data();
+            try{
+                Double column1_value = Double.parseDouble(column1.getFrom(row));
+                Double column2_value = Double.parseDouble(column2.getFrom(row));
+                String new_column_value = String.valueOf(column1_value-column2_value);
+                data = insert(data, new_column_value);
+                Row new_row = new Row(data);
+                new_table.add(new_row);
+            }catch(Exception e){
+                throw error("Minus data type false.");
+            }
+        }
+        return new_table;
+    }
 
     /** Parse and execute a create statement from the token stream. */
     void createStatement() {
