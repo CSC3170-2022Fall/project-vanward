@@ -166,17 +166,63 @@ class Table implements Iterable<Row> {
         }
     }
 
-    /** Print my contents on the standard output. */
-    void print() {
+    void printEdge(){
+        for (int k=0; k<column_titles.length; k++){
+            int length = 20;
+            for(int j=0; j<length+1; j++){
+                if(j==0){
+                    System.out.print("+");  
+                }
+                else{
+                    System.out.print("-");
+                }  
+            }
+        }
+        System.out.print("+\n");
+    }
+
+    int[] find_max_length(){
+        int[] max_length = new int[column_titles.length];
+        int max = 0;
+        int k=0;
         Iterator<Row> i = _rows.iterator();
         while (i.hasNext()) {
             Row value = i.next();
-        for (int j = 0; j <value.size(); j++) {
-            System.out.print(" " + value.get(j));
+            max = column_titles[k].length();
+            for (int j = 0; j <value.size(); j++) {
+                if(max>value.get(j).length()){
+                    max = value.get(j).length();
+                }
+            }
+            max_length[k] = max;
+            k++;
+        } 
+        return max_length;
+    }
+
+    /** Print my contents on the standard output. */
+    void print() {
+        Iterator<Row> i = _rows.iterator();
+        printEdge();
+        for (int k=0; k<column_titles.length; k++){
+            System.out.printf("|%-20s", column_titles[k]);
         }
+        System.out.print("|");
+        System.out.println();
+        printEdge();
+
+        while (i.hasNext()) {
+            Row value = i.next();
+        for (int j = 0; j <value.size(); j++) {
+            System.out.printf("|%-20s", value.get(j));
+        }
+        System.out.print("|");
         System.out.println();
         }
+
+        printEdge();
     }
+
 
     /** Return a new Table whose columns are COLUMNNAMES, selected from
      *  rows of this table that satisfy CONDITIONS. */
