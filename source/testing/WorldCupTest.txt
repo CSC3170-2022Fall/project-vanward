@@ -15,7 +15,7 @@ create table ManyGoalsTeams as select Country, Goals_For from WorldCupGroups whe
 select Country, Goals_For from ManyGoalsTeams;
 insert into ManyGoalsTeams values 'China', '10';
 select Country, Goals_For from ManyGoalsTeams;
-remove_row from ManyGoalsTeams where Goals_For<=9;
+remove_row from ManyGoalsTeams where Goals_For <= 9;
 select Country, Goals_For from ManyGoalsTeams;
 
 
