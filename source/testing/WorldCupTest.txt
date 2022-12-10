@@ -1,0 +1,22 @@
+load WorldCupGroups;
+print WorldCupGroups;
+
+select Country, Continent from WorldCupGroups;
+
+select Country, Continent, Wins, Goals_For, Goals_Against from WorldCupGroups where Continent = 'Europe';
+select Country, Continent, Goals_For from WorldCupGroups where Continent = 'Europe' order by Goals_For desc;
+
+select Continent, max(Goals_For) from WorldCupGroups group by Continent;
+select Continent, avg(Goals_For) from WorldCupGroups group by Continent;
+
+column_minus WorldCupGroups: Goals_For and Goals_against to Goals_diff;
+
+create table ManyGoalsTeams as select Country, Goals_For from WorldCupGroups where Goals_For >= 4;
+select Country, Goals_For from ManyGoalsTeams;
+insert into ManyGoalsTeams values 'China', '10';
+select Country, Goals_For from ManyGoalsTeams;
+remove_row from ManyGoalsTeams where Goals_For<=9;
+select Country, Goals_For from ManyGoalsTeams;
+
+
+
