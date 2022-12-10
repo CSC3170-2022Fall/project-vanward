@@ -1,4 +1,5 @@
 load WorldCupGroups;
+load Shooters;
 print WorldCupGroups;
 
 select Country, Continent from WorldCupGroups;
@@ -9,6 +10,8 @@ select Country, Continent, Goals_For from WorldCupGroups where Continent = 'Euro
 select Continent, max(Goals_For) from WorldCupGroups group by Continent;
 select Continent, avg(Goals_For) from WorldCupGroups group by Continent;
 select Group, avg(Points), avg(Goals_For) from WorldCupGroups group by Group order by avg_Goals_For;
+
+select Country, Goals_For, Players, Player_Goals from WorldCupGroups, Shooters where Country = Country;
 
 column_minus WorldCupGroups: Goals_For and Goals_against to Goals_diff;
 
