@@ -166,10 +166,10 @@ class Table implements Iterable<Row> {
         }
     }
 
-    void printEdge(){
+       void printEdge(int[] max_length){
         for (int k=0; k<column_titles.length; k++){
             int length = 20;
-            for(int j=0; j<length+1; j++){
+            for(int j=0; j<max_length[k]+1; j++){
                 if(j==0){
                     System.out.print("+");  
                 }
@@ -184,43 +184,43 @@ class Table implements Iterable<Row> {
     int[] find_max_length(){
         int[] max_length = new int[column_titles.length];
         int max = 0;
-        int k=0;
-        Iterator<Row> i = _rows.iterator();
-        while (i.hasNext()) {
-            Row value = i.next();
-            max = column_titles[k].length();
-            for (int j = 0; j <value.size(); j++) {
-                if(max>value.get(j).length()){
+        
+        for(int j=0; j<column_titles.length; j++){
+            max = column_titles[j].length();
+            Iterator<Row> i = _rows.iterator();
+            while(i.hasNext()){
+                Row value = i.next();
+                if(max<value.get(j).length()){
                     max = value.get(j).length();
                 }
             }
-            max_length[k] = max;
-            k++;
-        } 
+            max_length[j] = max;
+        }
         return max_length;
     }
 
     /** Print my contents on the standard output. */
     void print() {
         Iterator<Row> i = _rows.iterator();
-        printEdge();
+        int[] max_length = find_max_length();
+        printEdge(max_length);
         for (int k=0; k<column_titles.length; k++){
-            System.out.printf("|%-20s", column_titles[k]);
+            System.out.printf("|%-"+max_length[k]+"s", column_titles[k]);
         }
         System.out.print("|");
         System.out.println();
-        printEdge();
+        printEdge(max_length);
 
         while (i.hasNext()) {
             Row value = i.next();
-        for (int j = 0; j <value.size(); j++) {
-            System.out.printf("|%-20s", value.get(j));
+        for (int j = 0; j <column_titles.length; j++) {
+            System.out.printf("|%-"+max_length[j]+"s",value.get(j));
         }
         System.out.print("|");
         System.out.println();
         }
 
-        printEdge();
+        printEdge(max_length);
     }
 
 
