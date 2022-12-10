@@ -9,7 +9,7 @@ B,Iran,Asia,1,0,2,4,7,3
 B,Wales,Europe,0,1,2,1,6,1
 C,Argentina,South_America,2,0,1,5,2,6
 C,Poland,Europe,1,1,1,2,2,4
-C,Mexico,North_America,,1,1,1,2,3,4
+C,Mexico,North_America,1,1,1,2,3,4
 C,Saudi_Arabia,Asia,1,0,2,3,5,3
 D,France,Europe,2,0,1,6,3,6
 D,Australia,Asia,2,0,1,3,4,6
