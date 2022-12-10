@@ -46,7 +46,10 @@ public class Main {
         // columns.add(c2);
         // Row testa = new Row(columns, r1, r4);
         // System.out.println(testa.get(0) + " " + testa.get(1));
-
+    System.out.println("Welcome to Vanward Database Management System!");
+    System.out.println("Version: 1.0.0  Custom version for Qatar World Cup\n");
+    System.out.println("Copyright 2022, Vanward Database Team\n");
+    System.out.println("Type 'exit' to terminate the database management system.\n");
     Scanner input = new Scanner(System.in);
         CommandInterpreter interpreter =
             new CommandInterpreter(input, System.out);
