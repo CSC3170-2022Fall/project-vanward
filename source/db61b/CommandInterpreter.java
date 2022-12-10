@@ -167,6 +167,9 @@ class CommandInterpreter {
         case "column_minus":
             columnMinusStatement();
             break;
+        case "remove_row":
+            removeRowStatement();
+            break;
         default:
             throw error("unrecognizable command");
         }
@@ -187,6 +190,40 @@ class CommandInterpreter {
         return tmp; 
     }
 
+    // Judge whether the row in the table.
+    boolean in_table(Row target_row, Table table){
+        for(Row row: table){
+            if(row.equals(target_row)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void removeRowStatement(){
+        _input.next("remove_row");
+        _input.next("from");
+        String table_name = name();
+        Table pre_table = _database.get(table_name);
+        ArrayList<Condition> conditions; 
+        conditions =  conditionClause(pre_table);
+        ArrayList<String> column_titles = new ArrayList<>();
+        for(String col_name: pre_table.get_column_titles()){
+            column_titles.add(col_name);
+        }
+        Table new_table = pre_table.select(column_titles, conditions);
+        Table result_table = new Table(column_titles);
+        for(Row row:pre_table){
+            if(in_table(row, new_table)) continue;
+            result_table.add(row);
+        }
+        _database.put(table_name, result_table);
+        result_table.print();
+        JTableImg show_table = new JTableImg(new_table);
+        show_table.display(table_name); 
+        _input.next(";");    
+    }
+
     // Column Plus
     void columnPlusStatement(){
         _input.next("column_plus");
@@ -204,6 +241,8 @@ class CommandInterpreter {
         Table new_table = columnPlusCluase(table, col_1_name, col_2_name, col_new);
         _database.put(table_name, new_table);
         new_table.print();
+        JTableImg show_table = new JTableImg(new_table);
+        show_table.display(table_name);
         _input.next(";");
     }
 
@@ -248,6 +287,8 @@ class CommandInterpreter {
         Table new_table = columnMinusCluase(table, col_1_name, col_2_name, col_new);
         _database.put(table_name, new_table);
         new_table.print();
+        JTableImg show_table = new JTableImg(new_table);
+        show_table.display(table_name);
         _input.next(";");
     }
 
@@ -351,10 +392,13 @@ class CommandInterpreter {
     void printStatement() {
         _input.next("print");
         String name = _input.peek();
-        Table table = tableName();
+        String table_name = name();
+        Table table = _database.get(table_name);
         _input.next(";");
         System.out.printf("Contents of %s:%n", name);
         table.print();
+        JTableImg show_table = new JTableImg(table);
+        show_table.display(table_name);
     }
 
     /** Parse and execute a select statement from the token stream. */
@@ -363,6 +407,9 @@ class CommandInterpreter {
         _input.next(";");
         System.out.println("Select result:");
         table.print();
+        String table_name = "Select Result";
+        JTableImg show_table = new JTableImg(table);
+        show_table.display(table_name);
     }
 
     /** Parse and execute a table definition, returning the specified
@@ -556,97 +603,13 @@ class CommandInterpreter {
             conditions = conditionClause(table1);
             select_table = table1.select(column_titles, conditions);
         }
-        // select_table.print();
-        // Order by
-        Table order_table = null;
-        if (_input.nextIf("order")) {
-            _input.next("by");
-            order_table = new Table(column_titles);
-            String column_name = name();
-            if(_input.nextIf("desc")){
-                Column col = new Column(column_name, select_table);
-                while(select_table.size() != 0){
-                    Row max_row = null;
-                    try{
-                        Double max = null;
-                        String value = null;
-                        for(Row row : select_table){
-                            value = col.getFrom(row);
-                            if(max == null){
-                                max = Double.valueOf(value);
-                                max_row = row;
-                                continue;
-                            }
-                            if(max < Double.valueOf(value)){
-                                max = Double.valueOf(value);
-                                max_row = row;
-                            }
-                        }   
-                    }catch(Exception e){
-                        String max = null;
-                        for(Row row : select_table){
-                            if(max == null){
-                                max = col.getFrom(row);
-                                max_row = row;
-                                continue;
-                            }
-                            if(max.compareTo(col.getFrom(row)) < 0){
-                                max = col.getFrom(row);
-                                max_row = row;
-                            }
-                        }   
-                    }
-                    select_table.remove(max_row);
-                    order_table.add(max_row);
-                }
-            }
-            else{
-                _input.nextIf("asc");
-                Column col = new Column(column_name, select_table);
-                while(select_table.size() != 0){
-                    Row min_row = null;
-                    try{
-                        Double min = null;
-                        String value = null;
-                        for(Row row : select_table){
-                            value = col.getFrom(row);
-                            if(min == null){
-                                min = Double.valueOf(value);
-                                min_row = row;
-                                continue;
-                            }
-                            if(min > Double.valueOf(value)){
-                                min = Double.valueOf(value);
-                                min_row = row;
-                            }
-                        }   
-                    }catch(Exception e){
-                        String min = null;
-                        for(Row row : select_table){
-                            if(min == null){
-                                min = col.getFrom(row);
-                                min_row = row;
-                                continue;
-                            }
-                            if(min.compareTo(col.getFrom(row)) > 0){
-                                min = col.getFrom(row);
-                                min_row = row;
-                            }
-                        }   
-                    }
-                    select_table.remove(min_row);
-                    order_table.add(min_row);
-                }
-            }     
-        }
-        else order_table = select_table;
         // group by
         ArrayList<String> final_titles = new ArrayList<>();
         for(int i = 0; i < return_column_length; ++i){
             if(aggregate_types.get(i) == "normal")  final_titles.add(return_titles.get(i));
-            else    final_titles.add(aggregate_types.get(i) + "-" + return_titles.get(i));
+            else    final_titles.add(aggregate_types.get(i) + "_" + return_titles.get(i));
         }
-        Table final_table = new Table(final_titles);
+        Table group_table = new Table(final_titles);
         if(_input.nextIf("group")){
             _input.next("by");
             String group_title = name();
@@ -660,26 +623,25 @@ class CommandInterpreter {
                         throw error("Group by is error format!");
             }
            // obtain different groups
-            Column group_Column = new Column(group_title, order_table);
+            Column group_Column = new Column(group_title, select_table);
             LinkedHashMap <String, Table> groups = new LinkedHashMap<>();
-            for(Row row : order_table){
+            for(Row row : select_table){
                 String value = group_Column.getFrom(row);
                 if(groups.get(value) == null){
                     Table current = new Table(column_titles);
                     current.add(row);
-                    current.rows_count.put(row, order_table.rows_count.get(row));
+                    current.rows_count.put(row, select_table.rows_count.get(row));
                     groups.put(value, current);
                 }
                 else {
                     groups.get(value).add(row);
-                    groups.get(value).rows_count.put(row, order_table.rows_count.get(row));
+                    groups.get(value).rows_count.put(row, select_table.rows_count.get(row));
                 }
-            }
-           
+            }     
             // aggregate functions
             for(String name : groups.keySet()){
                 Table tmp_table = groups.get(name);
-                final_table.add(table_aggregate_function(tmp_table, return_titles, aggregate_types));
+                group_table.add(table_aggregate_function(tmp_table, return_titles, aggregate_types));
             }
         } 
         else{
@@ -690,10 +652,110 @@ class CommandInterpreter {
                 else if(!same_type.equals("normal") && tmp.equals("normal"))
                     throw error("This is an invalid select statement!\nAll attributes should be aggregate functions!");
             }
-            if(same_type.equals("normal") ) final_table = order_table;
-            else final_table.add(table_aggregate_function(order_table, return_titles, aggregate_types));
+            if(same_type.equals("normal") ) group_table = select_table;
+            else group_table.add(table_aggregate_function(select_table, return_titles, aggregate_types));
         }
-        return final_table;
+        // Having condition
+        Table having_table = null;
+        if(_input.peek().equals("having")){
+            // having_table = new Table(group_table.get_column_titles());
+            ArrayList<Condition> having_conditions;
+            ArrayList<String> column_titles_ = new ArrayList<>();
+            for(String col_name: group_table.get_column_titles()){
+                column_titles_.add(col_name);
+            }
+            having_conditions = conditionClause(group_table);
+            having_table = group_table.select(column_titles_, having_conditions);
+            group_table = having_table;            
+        }else{
+            ;
+        }
+        // Order by
+        Table order_table = null;
+        // System.out.println("Here1");
+        if (_input.nextIf("order")) {
+            // System.out.println("Here2");
+            _input.next("by");
+            order_table = new Table(group_table.get_column_titles());
+            String column_name = name();
+            if(_input.nextIf("desc")){
+                Column col = new Column(column_name, group_table);
+                while(group_table.size() != 0){
+                    Row max_row = null;
+                    try{
+                        Double max = null;
+                        String value = null;
+                        for(Row row : group_table){
+                            value = col.getFrom(row);
+                            if(max == null){
+                                max = Double.valueOf(value);
+                                max_row = row;
+                                continue;
+                            }
+                            if(max < Double.valueOf(value)){
+                                max = Double.valueOf(value);
+                                max_row = row;
+                            }
+                        }   
+                    }catch(Exception e){
+                        String max = null;
+                        for(Row row : group_table){
+                            if(max == null){
+                                max = col.getFrom(row);
+                                max_row = row;
+                                continue;
+                            }
+                            if(max.compareTo(col.getFrom(row)) < 0){
+                                max = col.getFrom(row);
+                                max_row = row;
+                            }
+                        }   
+                    }
+                    group_table.remove(max_row);
+                    order_table.add(max_row);
+                }
+            }
+            else{
+                _input.nextIf("asc");
+                Column col = new Column(column_name, group_table);
+                while(group_table.size() != 0){
+                    Row min_row = null;
+                    try{
+                        Double min = null;
+                        String value = null;
+                        for(Row row : group_table){
+                            value = col.getFrom(row);
+                            if(min == null){
+                                min = Double.valueOf(value);
+                                min_row = row;
+                                continue;
+                            }
+                            if(min > Double.valueOf(value)){
+                                min = Double.valueOf(value);
+                                min_row = row;
+                            }
+                        }   
+                    }catch(Exception e){
+                        String min = null;
+                        for(Row row : group_table){
+                            if(min == null){
+                                min = col.getFrom(row);
+                                min_row = row;
+                                continue;
+                            }
+                            if(min.compareTo(col.getFrom(row)) > 0){
+                                min = col.getFrom(row);
+                                min_row = row;
+                            }
+                        }   
+                    }
+                    group_table.remove(min_row);
+                    order_table.add(min_row);
+                }
+            }     
+        }
+        else order_table = group_table;      
+        return order_table;
     }
 
     /** Parse and return a valid name (identifier) from the token stream. */
@@ -733,6 +795,24 @@ class CommandInterpreter {
         ArrayList<Condition> conditions = new ArrayList<>();
         if(_input.nextIf("where")){
             do{
+                if(_input.nextIf("by"));
+                Column column1 = new Column(_input.next(Tokenizer.IDENTIFIER), tables);
+                String relation = _input.next(Tokenizer.RELATION);
+                if(_input.nextIs(Tokenizer.IDENTIFIER)){
+                    Column column2 = new Column(_input.next(Tokenizer.IDENTIFIER), tables);
+                    Condition condition = new Condition(column1, relation, column2);
+                    conditions.add(condition);
+                }
+                else if(_input.nextIs(Tokenizer.LITERAL)){
+                    String value = literal();
+                    Condition condition = new Condition(column1, relation, value);
+                    conditions.add(condition);
+                }
+            }
+            while(_input.nextIf("and") || _input.nextIf("AND"));
+        }else if(_input.nextIf("having")){
+            do{
+                _input.next("by");
                 Column column1 = new Column(_input.next(Tokenizer.IDENTIFIER), tables);
                 String relation = _input.next(Tokenizer.RELATION);
                 if(_input.nextIs(Tokenizer.IDENTIFIER)){
@@ -751,25 +831,6 @@ class CommandInterpreter {
         
         return conditions;
     }
-
-    /** Parse and return a Condition that applies to TABLES from the
-     *  token stream. */
-    /*
-    Condition condition(Table... tables) {
-        Column column1 = new Column(_input.next(Tokenizer.IDENTIFIER), tables);
-        String relation = _input.next(Tokenizer.RELATION);
-        Condition condition;
-        if(_input.nextIs(Tokenizer.IDENTIFIER)){
-            Column column2 = new Column(_input.next(Tokenizer.IDENTIFIER), tables);
-            condition = new Condition(column1, relation, column2);    
-        }
-        else{
-            String value = _input.next(Tokenizer.LITERAL);
-            condition = new Condition(column1, relation, value);
-        }
-        return condition;
-    }
-    */
 
     /** Advance the input past the next semicolon. */
     void skipCommand() {
