@@ -16,5 +16,7 @@ Notice Every group member does their work on their own branch at the first stage
  
  1. Implement sum, average, count, max, and min functions.
  2. Implement "group by", "order by" commands.
+ 3. Improve the visualization of the table.
+ 4. Implement "column_minus" commands.
  --up to 12/09--
 <!-- TODO -->
