@@ -192,6 +192,9 @@ class CommandInterpreter {
         _input.next("column_plus");
         String table_name = name();
         Table table = _database.get(table_name);
+        if(table==null){
+            throw error("Table %s is not exist",table_name);
+        }
         _input.next(":");
         String col_1_name = name();
         _input.next("and");
@@ -233,6 +236,9 @@ class CommandInterpreter {
         _input.next("column_minus");
         String table_name = name();
         Table table = _database.get(table_name);
+        if(table==null){
+            throw error("Table %s is not exist",table_name);
+        }
         _input.next(":");
         String col_1_name = name();
         _input.next("and");
