@@ -20,7 +20,7 @@ public class Main {
         System.out.println("Welcome to Vanward Database Management System!");
         System.out.println("Version: 1.0.0  Custom version for Qatar World Cup\n");
         System.out.println("Copyright 2022, Vanward Database Team\n");
-        System.out.println("Type 'exit' to terminate the database management system.\n");
+        System.out.println("Type 'exit' or 'quit' to terminate the database management system.\n");
         
         Scanner input = new Scanner(System.in);
         CommandInterpreter interpreter =
