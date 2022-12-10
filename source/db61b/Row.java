@@ -7,6 +7,8 @@
 // solutions.
 package db61b;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -88,6 +90,14 @@ class Row {
     public int hashCode() {
         return Arrays.hashCode(_data);
     }
+
+    public ArrayList<String> get_data(){
+        ArrayList<String> data = new ArrayList<>();
+        for(String tem:_data){
+            data.add(tem);
+        };
+        return data;
+    } 
 
     /** Contents of this row. */
     private String[] _data;

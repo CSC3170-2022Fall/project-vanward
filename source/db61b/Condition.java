@@ -48,33 +48,69 @@ class Condition {
             c2 = _val2;
         }
         if (_relation.equals("<")) {
-            if (c1.compareTo(c2) < 0) {
-                return true;
+            try{
+                double c1_value = Double.parseDouble(c1);
+                double c2_value = Double.parseDouble(c2);
+
+                if(c1_value < c2_value)   return true;
+            }
+            catch(Exception e){
+                if(c1.compareTo(c2) < 0) return true;
             }
         }
         if (_relation.equals(">")) {
-            if (c1.compareTo(c2) > 0) {
-                return true;
+            try{
+                double c1_value = Double.parseDouble(c1);
+                double c2_value = Double.parseDouble(c2);
+
+                if(c1_value > c2_value)   return true;
+            }
+            catch(Exception e){
+                if(c1.compareTo(c2) > 0) return true;
             }
         }
         if (_relation.equals("<=")) {
-            if (c1.compareTo(c2) <= 0) {
-                return true;
+            try{
+                double c1_value = Double.parseDouble(c1);
+                double c2_value = Double.parseDouble(c2);
+
+                if(c1_value <= c2_value)   return true;
+            }
+            catch(Exception e){
+                if(c1.compareTo(c2) <= 0) return true;
             }
         }
         if (_relation.equals(">=")) {
-            if (c1.compareTo(c2) >= 0) {
-                return true;
+            try{
+                double c1_value = Double.parseDouble(c1);
+                double c2_value = Double.parseDouble(c2);
+
+                if(c1_value >= c2_value)   return true;
+            }
+            catch(Exception e){
+                if(c1.compareTo(c2) >= 0) return true;
             }
         }
         if (_relation.equals("=")) {
-            if (c1.compareTo(c2) == 0) {
-                return true;
+            try{
+                double c1_value = Double.parseDouble(c1);
+                double c2_value = Double.parseDouble(c2);
+
+                if(c1_value == c2_value)   return true;
+            }
+            catch(Exception e){
+                if(c1.compareTo(c2) == 0) return true;
             }
         }
         if (_relation.equals("!=")) {
-            if (c1.compareTo(c2) != 0) {
-                return true;
+            try{
+                double c1_value = Double.parseDouble(c1);
+                double c2_value = Double.parseDouble(c2);
+
+                if(c1_value != c2_value)   return true;
+            }
+            catch(Exception e){
+                if(c1.compareTo(c2) != 0) return true;
             }
         }
         return false;

@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -78,18 +79,19 @@ class Table implements Iterable<Row> {
     /** Add ROW to THIS if no equal row already exists.  Return true if anything
      *  was added, false otherwise. */
     public boolean add(Row row) {
-        Iterator<Row> i = this.iterator();
-        while(i.hasNext()) {
-            if(i.next().equals(row)){
-                return false;
-            }
+        if (rows_count.get(row)==null){
+            _rows.add(row);
+            rows_count.put(row,1);
+            return true;
+        }else{
+            rows_count.replace(row, rows_count.get(row)+1);
+            return false;
         }
-        _rows.add(row);
-        return true;   // REPLACE WITH SOLUTION
     }
 
     public boolean remove(Row row){
         _rows.remove(row);
+        rows_count.remove(row);
         return true;
     }
 
@@ -256,9 +258,14 @@ class Table implements Iterable<Row> {
         return true;
     }
 
+    public String[] get_column_titles(){
+        return column_titles;
+    }
+
     /** My rows. */
     private LinkedHashSet<Row> _rows = new LinkedHashSet<>();
-    private String[] column_titles;
+    public String[] column_titles;
+    public HashMap<Row,Integer> rows_count = new HashMap<>();
 }
 
 

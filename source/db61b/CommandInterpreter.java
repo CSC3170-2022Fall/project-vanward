@@ -161,11 +161,37 @@ class CommandInterpreter {
         case "store":
             storeStatement();
             break;
+        case "column_plus":
+            columnPlusStatement();
+            break;
         default:
             throw error("unrecognizable command");
         }
         return true;
     }
+
+    // Column Plus
+    void columnPlusStatement(){
+        _input.next("column_plus");
+        _input.next("from");
+        String table_name = name();
+        Table table = _database.get(table_name);
+        String col_1_name = name();
+        _input.next("and");
+        String col_2_name = name();
+        _input.next("to");
+        String col_new = name();
+        Table new_table = columnPlusCluase();
+        _database.put(table_name, new_table);
+    }
+
+    // column puls function
+    Table columnPlusCluase(Table pre_table, String col_1_name, String col_2_name, String col_new){
+        ArrayList list = new ArrayList(new String[] { “aaa”, “bbb” });
+        String[] new_column_titles = pre_table.get_column_titles();
+        Table new_table = new Table(null)
+    }
+
 
     /** Parse and execute a create statement from the token stream. */
     void createStatement() {
@@ -173,6 +199,8 @@ class CommandInterpreter {
         _input.next("table");
         String name = name();
         Table table = tableDefinition();
+        for(Row row : table.rows_count.keySet())
+            table.rows_count.put(row, 1);
         _database.put(name, table);
         _input.next(";");
     }
@@ -273,6 +301,7 @@ class CommandInterpreter {
             _input.next("as");
             table = selectClause();
         }
+        
         return table;
     }
 
@@ -286,8 +315,9 @@ class CommandInterpreter {
         // the set in order to obtain count
         ArrayList<HashSet<String>> value_numbers = new ArrayList<>();
         for(int i = 0; i < titles_length; ++i) value_numbers.add(new HashSet<>());
-
+        int total_num = 0;
         for(Row row : ori_table){
+            total_num += ori_table.rows_count.get(row);
             for(int i = 0; i < titles_length; ++i){
                 Column column = columns.get(i);
                 if(types.get(i).equals("normal"))   values[i] = column.getFrom(row);
@@ -299,10 +329,12 @@ class CommandInterpreter {
                     catch(Exception e){
                         throw error("The value type cannot convert to double!"); 
                     }
-                    if(values[i] == null)  values[i] = String.valueOf(tmp);
+                    if(values[i] == null)  {
+                        values[i] = String.valueOf((tmp * ori_table.rows_count.get(row)));
+                    }
                     else{
                         double value = Double.parseDouble(values[i]);
-                        value += tmp;
+                        value += tmp * ori_table.rows_count.get(row);
                         values[i] = String.valueOf(value);
                     }
                 }
@@ -345,7 +377,7 @@ class CommandInterpreter {
         for(int i = 0; i < titles_length; ++i){
             if(types.get(i).equals("avg")){
                 double value = Double.parseDouble(values[i]);
-                values[i] = String.valueOf((value / ori_table.size()));
+                values[i] = String.valueOf((value / total_num));
             }
             else if(types.get(i).equals("count")){
                 values[i] = String.valueOf(value_numbers.get(i).size());
@@ -521,9 +553,13 @@ class CommandInterpreter {
                 if(groups.get(value) == null){
                     Table current = new Table(column_titles);
                     current.add(row);
+                    current.rows_count.put(row, order_table.rows_count.get(row));
                     groups.put(value, current);
                 }
-                else groups.get(value).add(row);
+                else {
+                    groups.get(value).add(row);
+                    groups.get(value).rows_count.put(row, order_table.rows_count.get(row));
+                }
             }
            
             // aggregate functions
