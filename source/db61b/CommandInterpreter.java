@@ -9,9 +9,10 @@
 package db61b;
 
 import java.io.PrintStream;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 import javax.swing.text.TabSet;
@@ -275,78 +276,67 @@ class CommandInterpreter {
         return table;
     }
 
-    private static String[] insert(String[] arr, String... str) {
-        int size = arr.length; // 获取原数组长度
-        int newSize = size + str.length; // 原数组长度加上追加的数据的总长度
-        
-        // 新建临时字符串数组
-        String[] tmp = new String[newSize]; 
-        // 先遍历将原来的字符串数组数据添加到临时字符串数组
-        for (int i = 0; i < size; i++) { 
-            tmp[i] = arr[i];
+    Row table_aggregate_function(Table ori_table, ArrayList<String> titles, ArrayList<String> types){
+        int titles_length = titles.size();
+        String[] values = new String[titles_length];
+        for(int i = 0; i < titles_length; ++i)  values[i] = null;
+        // the columns we need
+        ArrayList<Column> columns = new ArrayList<>();
+        for (String title : titles) columns.add(new Column(title, ori_table));
+        // the set in order to obtain count
+        ArrayList<HashSet<String>> value_numbers = new ArrayList<>();
+        for(int i = 0; i < titles_length; ++i) value_numbers.add(new HashSet<>());
+
+        for(Row row : ori_table){
+            for(int i = 0; i < titles_length; ++i){
+                Column column = columns.get(i);
+                if(types.get(i).equals("normal"))   values[i] = column.getFrom(row);
+                else if(types.get(i).equals("avg") || types.get(i).equals("sum") )   {
+                    double tmp;
+                    try{
+                        tmp = Double.parseDouble(column.getFrom(row));
+                    }
+                    catch(Exception e){
+                        throw error("The value type cannot convert to double!"); 
+                    }
+                    if(values[i] == null)  values[i] = String.valueOf(tmp);
+                    else{
+                        double value = Double.parseDouble(values[i]);
+                        value += tmp;
+                        values[i] = String.valueOf(value);
+                    }
+                }
+                else if(types.get(i).equals("min")){
+                    String tmp = column.getFrom(row);
+                    if(values[i] == null)  values[i] = tmp;
+                    else{ 
+                        if(tmp.compareTo(values[i]) < 0) values[i] = tmp;
+                    }
+                }
+                else if(types.get(i).equals("max")){
+                    String tmp = column.getFrom(row);
+                    if(values[i] == null)  values[i] = tmp;
+                    else{ 
+                        if(tmp.compareTo(values[i]) > 0) values[i] = tmp;
+                    }
+                }
+                else if(types.get(i).equals("count")){
+                    String tmp = column.getFrom(row);
+                    value_numbers.get(i).add(tmp);
+                }
+            }
         }
-        // 在末尾添加上需要追加的数据
-        for (int i = size; i < newSize; i++) {
-            tmp[i] = str[i - size];
-        } 
-        return tmp; // 返回拼接完成的字符串数组
-    }
-
-
-    Integer table_aggreate(Table result, ArrayList<String> column_titles, String target_column, String agg_type){
-        Integer agg_result = 0;
-        if(agg_type.equals("avg")){
-            Integer sum = 0;
-            Column col = new Column(target_column, result);
-            for(Row row: result){
-                sum = sum + Integer.parseInt(col.getFrom(row));
+        for(int i = 0; i < titles_length; ++i){
+            if(types.get(i).equals("avg")){
+                double value = Double.parseDouble(values[i]);
+                values[i] = String.valueOf((value / ori_table.size()));
             }
-            agg_result = sum/result.size();
-        }else if(agg_type.equals("sum")){
-            Integer sum = 0;
-            Column col = new Column(target_column, result);
-            for(Row row: result){
-                sum = sum + Integer.parseInt(col.getFrom(row));
+            else if(types.get(i).equals("count")){
+                values[i] = String.valueOf(value_numbers.get(i).size());
             }
-            agg_result = sum;            
-        }else if(agg_type.equals("max")){
-            Integer max = null;
-            Column col = new Column(target_column, result);
-            for(Row row: result){
-                Integer current = Integer.parseInt(col.getFrom(row));
-                if(max==null){
-                    max = current;
-                }else if(max<current){
-                    max = current;
-                }
-            agg_result = max;
-            }            
-        }else if(agg_type.equals("min")){
-            Integer min = null;
-            Column col = new Column(target_column, result);
-            for(Row row: result){
-                Integer current = Integer.parseInt(col.getFrom(row));
-                if(min==null){
-                    min = current;
-                }else if(min>current){
-                    min = current;
-                }
-            }
-            agg_result = min;             
-        }else if(agg_type.equals("count")){
-            Integer count = 0;
-            HashMap<String,Integer> agg_record = new HashMap<>();
-            Column col = new Column(target_column, result);
-            for(Row row: result){
-                String value = col.getFrom(row);
-                if(agg_record.get(value)==null){
-                    agg_record.put(value, 1);
-                    count+=1;
-                }
-            }            
-            agg_result = count;
-        }       
-        return agg_result;
+        }
+        
+        return new Row(values);
     }
 
     /** Parse and execute a select clause from the token stream, returning the
@@ -355,187 +345,190 @@ class CommandInterpreter {
         _input.next("select");
         // obtain selected column titles
         ArrayList<String> column_titles = new ArrayList<>();
-        String type = "normal";
-        String target_column = null;
+        ArrayList<String> return_titles = new ArrayList<>();
+        ArrayList<String> aggregate_types = new ArrayList<>();
+
         do {
-            // Average type = 1
             if(_input.nextIf("avg")){
                 _input.next("(");
                 String name = columnName();
-                target_column = name;
-                column_titles.add(name);
+                return_titles.add(name);
+                aggregate_types.add("avg");
                 _input.next(")");
-                type = "avg";
-            }else if(_input.nextIf("sum")){
+            }
+            else if(_input.nextIf("sum")){
                 _input.next("(");
                 String name = columnName();
-                target_column = name;
-                column_titles.add(name);
+                return_titles.add(name);
+                aggregate_types.add("sum");
                 _input.next(")");
-                type = "sum";
             }
             else if(_input.nextIf("min")){
                 _input.next("(");
                 String name = columnName();
-                target_column = name;
-                column_titles.add(name);
+                return_titles.add(name);
+                aggregate_types.add("min");
                 _input.next(")");
-                type = "min";
             }
             else if(_input.nextIf("max")){
                 _input.next("(");
                 String name = columnName();
-                target_column = name;
-                column_titles.add(name);
+                return_titles.add(name);
+                aggregate_types.add("max");
                 _input.next(")");
-                type = "max";
             }
             else if(_input.nextIf("count")){
                 _input.next("(");
                 String name = columnName();
-                target_column = name;
-                column_titles.add(name);
+                return_titles.add(name);
+                aggregate_types.add("count");
                 _input.next(")");
-                type = "count";
             }
-            else{
-                column_titles.add(columnName());
+            else {
+                String name = columnName();
+                return_titles.add(name);
+                aggregate_types.add("normal");
             }
         } while (_input.nextIf(","));
+        // check whether it contains dupliace columns(titles + aggregate)
+        int return_column_length = return_titles.size();
+        for(int i = return_column_length - 1; i > 0; --i){
+            for(int j = i-1; j >=0; --j){
+                if(return_titles.get(i).equals(return_titles.get(j))
+                    && aggregate_types.get(i).equals(aggregate_types.get(j))){
+                        throw error("duplicate column name: %s and aggregate type: %s",
+                            return_titles.get(i), aggregate_types.get(i));
+                    }
+            }
+        }
+        // obtain different column titles
+        for(int i = 0; i < return_column_length; ++i){
+            String tmp_title = return_titles.get(i);
+            Boolean flag = false;
+            for(String compare_title : column_titles){
+                if(tmp_title.equals(compare_title)) flag = true;
+            }
+            if(!flag) column_titles.add(tmp_title);
+        }
         // obtain target tables (one or two)
         _input.next("from");
         Table table1 = tableName();
         Table table2 = null;
-        Table result = null;
         if (_input.nextIf(",")) {
             table2 = tableName();
         }
-        // obtain conditions
+        // obtain conditions and the table after basic select based on conditions
+        Table select_table = null;
         ArrayList<Condition> conditions;
         if (table2!=null) {
             conditions = conditionClause(table1, table2);
-            result = table1.select(table2, column_titles, conditions);
+            select_table = table1.select(table2, column_titles, conditions);
         }
         else {
             conditions = conditionClause(table1);
-            result = table1.select(column_titles, conditions);
+            select_table = table1.select(column_titles, conditions);
         }
+        // select_table.print();
         // Order by
+        Table order_table = null;
         if (_input.nextIf("order")) {
             _input.next("by");
-            Table order_table = new Table(column_titles);
-            String columnName = name();
+            order_table = new Table(column_titles);
+            String column_name = name();
             if(_input.nextIf("desc")){
-                Column col = new Column(columnName, result);
-                while(result.size()!=0){
+                Column col = new Column(column_name, select_table);
+                while(select_table.size() != 0){
                     String max = null;
                     Row max_row = null;
-                    for(Row row: result){
-                        if(max==null){
+                    for(Row row : select_table){
+                        if(max == null){
                             max = col.getFrom(row);
                             max_row = row;
                             continue;
                         }
-                        if(max.compareTo(col.getFrom(row))<0){
+                        if(max.compareTo(col.getFrom(row)) < 0){
                             max = col.getFrom(row);
                             max_row = row;
                         }
                     }
-                    result.remove(max_row);
+                    select_table.remove(max_row);
                     order_table.add(max_row);
                 }
-            }else if(_input.nextIf("asc")){
-                Column col = new Column(columnName, result);
-                while(result.size()!=0){
+            }
+            else{
+                _input.nextIf("asc");
+                Column col = new Column(column_name, select_table);
+                while(select_table.size() != 0){
                     String min = null;
                     Row min_row = null;
-                    for(Row row: result){
+                    for(Row row : select_table){
                         if(min==null){
                             min = col.getFrom(row);
                             min_row = row;
                             continue;
                         }
-                        if(min.compareTo(col.getFrom(row))>0){
+                        if(min.compareTo(col.getFrom(row)) > 0){
                             min = col.getFrom(row);
                             min_row = row;
                         }
                     }
-                    result.remove(min_row);
+                    select_table.remove(min_row);
                     order_table.add(min_row);
-            }
-            }else{
-                Column col = new Column(columnName, result);
-                while(result.size()!=0){
-                    String min = null;
-                    Row min_row = null;
-                    for(Row row: result){
-                        if(min==null){
-                            min = col.getFrom(row);
-                            min_row = row;
-                            continue;
-                        }
-                        if(min.compareTo(col.getFrom(row))>0){
-                            min = col.getFrom(row);
-                            min_row = row;
-                        }
-                    }
-                    result.remove(min_row);
-                    order_table.add(min_row);
-            }
-            }
-            result = order_table;      
+                }
+            }     
         }
-        // Group by
+        else order_table = select_table;
+        // group by
+        ArrayList<String> final_titles = new ArrayList<>();
+        for(int i = 0; i < return_column_length; ++i){
+            if(aggregate_types.get(i) == "normal")  final_titles.add(return_titles.get(i));
+            else    final_titles.add(aggregate_types.get(i) + "-" + return_titles.get(i));
+        }
+        Table final_table = new Table(final_titles);
         if(_input.nextIf("group")){
             _input.next("by");
             String group_title = name();
-            Column group_Column = new Column(group_title,result);
-            HashMap <String, Table> groups = new HashMap<>();
-            for(Row row:result){
+            // check only the group title is only title of "normal" aggregate type
+            for(int i = 0; i < return_column_length; ++i){
+                if(return_titles.get(i).equals(group_title) 
+                    && !aggregate_types.get(i).equals("normal")) 
+                        throw error("Group by is error format!");
+                else if(!return_titles.get(i).equals(group_title) 
+                    && aggregate_types.get(i).equals("normal"))
+                        throw error("Group by is error format!");
+            }
+           // obtain different groups
+            Column group_Column = new Column(group_title, order_table);
+            LinkedHashMap <String, Table> groups = new LinkedHashMap<>();
+            for(Row row : order_table){
                 String value = group_Column.getFrom(row);
-                if(groups.get(value)==null){
+                if(groups.get(value) == null){
                     Table current = new Table(column_titles);
                     current.add(row);
                     groups.put(value, current);
-                }else{
-                    groups.get(value).add(row);
                 }
+                else groups.get(value).add(row);
             }
-            // Agg functions
-            if(type.equals("normal")){
-                ;
-            }else{
-                Table agg_table = new Table(column_titles);
-                String[] title_ = {group_title,type + "-" + target_column};
-                Row title = new Row(title_);
-                agg_table.add(title);
-                for(String key:groups.keySet()){
-                    Table current_table = groups.get(key); 
-                    Integer agg_result = table_aggreate(current_table, column_titles, target_column, type);
-                    String[] agg_ = {key,String.valueOf(agg_result)};                    
-                    Row agg_row = new Row(agg_);
-                    agg_table.add(agg_row);                   
-                }
-                result = agg_table;
-                type = "normal";
+           
+            // aggregate functions
+            for(String name : groups.keySet()){
+                Table tmp_table = groups.get(name);
+                final_table.add(table_aggregate_function(tmp_table, return_titles, aggregate_types));
             }
+        } 
+        else{
+            String same_type = aggregate_types.get(0);
+            for(String tmp : aggregate_types){
+                if(same_type.equals("normal") && !same_type.equals(tmp)) 
+                    throw error("This is an invalid select statement!\nAggregate function is not allowed here!");
+                else if(!same_type.equals("normal") && tmp.equals("normal"))
+                    throw error("This is an invalid select statement!\nAll attributes should be aggregate functions!");
+            }
+            if(same_type.equals("normal") ) final_table = order_table;
+            else final_table.add(table_aggregate_function(order_table, return_titles, aggregate_types));
         }
-        // Aggregate Functions Judge the type
-        if(type.equals("normal")){
-            ;
-        }else{
-            Integer agg_result = table_aggreate(result, column_titles, target_column, type);
-            Table agg_table = new Table(column_titles);
-            String[] agg_ = {String.valueOf(agg_result)};
-            String[] title_ = {type + "-" + target_column};
-            Row agg_row = new Row(agg_);
-            Row title = new Row(title_);
-            agg_table.add(title);
-            agg_table.add(agg_row);
-            result = agg_table;
-        }
-        return result;
-}
+        return final_table;
+    }
 
     /** Parse and return a valid name (identifier) from the token stream. */
     String name() {
