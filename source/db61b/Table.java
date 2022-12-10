@@ -168,10 +168,10 @@ class Table implements Iterable<Row> {
         }
     }
 
-       void printEdge(int[] max_length){
+    void printEdge(int[] max_length){
         for (int k=0; k<column_titles.length; k++){
             int length = 20;
-            for(int j=0; j<max_length[k]+1; j++){
+            for(int j=0; j<max_length[k]+3; j++){
                 if(j==0){
                     System.out.print("+");  
                 }
@@ -207,23 +207,30 @@ class Table implements Iterable<Row> {
         int[] max_length = find_max_length();
         printEdge(max_length);
         for (int k=0; k<column_titles.length; k++){
-            System.out.printf("|%-"+max_length[k]+"s", column_titles[k]);
+            if(k!=0){
+                System.out.print(" ");
+            }
+            System.out.printf("|%s%-"+max_length[k]+"s", " ", column_titles[k]);
         }
-        System.out.print("|");
+        System.out.print(" |");
         System.out.println();
         printEdge(max_length);
 
         while (i.hasNext()) {
             Row value = i.next();
         for (int j = 0; j <column_titles.length; j++) {
-            System.out.printf("|%-"+max_length[j]+"s",value.get(j));
+            if(j!=0){
+                System.out.print(" ");
+            }
+            System.out.printf("|%s%-"+max_length[j]+"s", " ", value.get(j));
         }
-        System.out.print("|");
+        System.out.print(" |");
         System.out.println();
         }
 
         printEdge(max_length);
     }
+
 
 
     /** Return a new Table whose columns are COLUMNNAMES, selected from
