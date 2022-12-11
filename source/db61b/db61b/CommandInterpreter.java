@@ -218,9 +218,6 @@ class CommandInterpreter {
             result_table.add(row);
         }
         _database.put(table_name, result_table);
-        result_table.print();
-        JTableImg show_table = new JTableImg(result_table);
-        show_table.display(table_name); 
         _input.next(";");    
     }
 
@@ -504,7 +501,7 @@ class CommandInterpreter {
         for(int i = 0; i < titles_length; ++i){
             if(types.get(i).equals("avg")){
                 double value = Double.parseDouble(values[i]);
-                values[i] = String.valueOf((value / total_num));
+                values[i] = String.format("%.2f", (value / total_num));
             }
             else if(types.get(i).equals("count")){
                 values[i] = String.valueOf(value_numbers.get(i).size());
@@ -812,7 +809,6 @@ class CommandInterpreter {
             while(_input.nextIf("and") || _input.nextIf("AND"));
         }else if(_input.nextIf("having")){
             do{
-                _input.next("by");
                 Column column1 = new Column(_input.next(Tokenizer.IDENTIFIER), tables);
                 String relation = _input.next(Tokenizer.RELATION);
                 if(_input.nextIs(Tokenizer.IDENTIFIER)){
