@@ -4,7 +4,7 @@ ReadMe                  This file.
 
 Result Display
 
-    When you run the program db61b.db61b.main, you can just type the contents of .txt files in testing. 
+    When you run the program db61b.db61b.main, you can just type the .txt files contents of testing folder in the terminal. 
     The table result will be showed in two places: terminal and pop-up windows.
 
 
@@ -27,12 +27,7 @@ testing:                 Subdirectory holding files for integration testing:
     students.db, enrolled.db, courses.db(These .db file is in the outside)
                         Sample database tables from the project handout.
 
-    test1.in, test2.in    Input files for testing.  The makefile will respond
-                        to 'make check' by running these files through your
-                        program, filtering the output through 
-                        testing/test-filter, and comparing the results with 
-                        the corresponding .out files.  You should add more 
-                        files to the list in Makefile.
+    test1.in, test2.in    Input files for testing. Type the files contents in the terminal. 
                         REMINDER: These are samples only.  They DON'T 
                         constitute adequate tests.
 
@@ -46,3 +41,5 @@ testing:                 Subdirectory holding files for integration testing:
 
     WorldCupGroups.db, Shooters.db(These .db file is in the outside)
                     Sample database tables from the project handout.
+    Presentation.txt   Input files for testing. Type the files contents in the terminal.
+    This part will be showed during the presentation.
