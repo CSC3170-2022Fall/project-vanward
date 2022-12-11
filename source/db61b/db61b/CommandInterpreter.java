@@ -219,7 +219,7 @@ class CommandInterpreter {
         }
         _database.put(table_name, result_table);
         result_table.print();
-        JTableImg show_table = new JTableImg(new_table);
+        JTableImg show_table = new JTableImg(result_table);
         show_table.display(table_name); 
         _input.next(";");    
     }
