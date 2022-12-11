@@ -42,4 +42,4 @@ testing:                 Subdirectory holding files for integration testing:
     WorldCupGroups.db, Shooters.db(These .db file is in the outside)
                     Sample database tables from the project handout.
     Presentation.txt   Input files for testing. Type the files contents in the terminal.
-    This part will be showed during the presentation.
+                    This part will be showed during the presentation.
