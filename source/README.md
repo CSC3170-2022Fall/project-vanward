@@ -6,7 +6,7 @@ Result Display
 When you run the program db61b.db61b.main, you can just type the contents of .txt files in testing. The table result will be showed in two places: terminal and pop-up windows.
 
 
-db61b                   A subdirectory containing db61b programs and WCG pictures
+db61b:                   A subdirectory containing db61b programs and WCG pictures
 
     db61b                   A subdirectory containing skeletons for the 
                             db61b package:
@@ -17,7 +17,7 @@ db61b                   A subdirectory containing db61b programs and WCG picture
     WCG_picture             A subdirectory containing flag-pictures of participating countries in the World Cup
                             Used for our presentation.
 
-testing                 Subdirectory holding files for integration testing:
+testing:                 Subdirectory holding files for integration testing:
     The basic implementation about DBMS (Required by CS61B)
 
     students.db, enrolled.db, courses.db(These .db file is in the outside)
