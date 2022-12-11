@@ -40,7 +40,7 @@ testing:                 Subdirectory holding files for integration testing:
     Use the data from the world cup to test addition features 
 
     WorldCupGroups.db, Shooters.db  (These .db file is in the outside)
-                    Sample database tables from the project handout.
+                    Self-designed sample database tables from the project.
                     
     Presentation.txt   Input files for testing. Type the files contents in the terminal.
                     This part will be showed during the presentation.
