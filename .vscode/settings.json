@@ -11,5 +11,7 @@
         "SPTF",
         "Stackoverflow",
         "unitization"
-    ]
+    ],
+    "java.dependency.packagePresentation": "hierarchical",
+    "java.dependency.syncWithFolderExplorer": false
 }
