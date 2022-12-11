@@ -24,7 +24,7 @@ testing:                 Subdirectory holding files for integration testing:
 
     The basic implementation about DBMS (Required by CS61B)
 
-    students.db, enrolled.db, courses.db(These .db file is in the outside)
+    students.db, enrolled.db, courses.db (These .db file is in the outside)
                         Sample database tables from the project handout.
 
     test1.in, test2.in    Input files for testing. Type the files contents in the terminal. 
@@ -39,7 +39,7 @@ testing:                 Subdirectory holding files for integration testing:
     
     Use the data from the world cup to test addition features 
 
-    WorldCupGroups.db, Shooters.db(These .db file is in the outside)
+    WorldCupGroups.db, Shooters.db  (These .db file is in the outside)
                     Sample database tables from the project handout.
                     
     Presentation.txt   Input files for testing. Type the files contents in the terminal.
