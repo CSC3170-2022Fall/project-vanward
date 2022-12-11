@@ -31,6 +31,13 @@ testing                 Subdirectory holding files for integration testing:
 
   students.db, enrolled.db, courses.db
                         Sample database tables from the project handout.
+                      
+  WorldCupGroups.db, Shooters.db
+                        Self-designed sample database tables for the project.
+                        
+  WCG_picture
+                        Folder for pictures of teams participated in the Qatar World Cup
+                        (component output for the jtable).
 
   test1.in, test2.in    Input files for testing.  The makefile will respond
                         to 'make check' by running these files through your
@@ -53,5 +60,8 @@ testing                 Subdirectory holding files for integration testing:
                         your program with each .in file, comparing the output
                         with the corresponding .out file and producing a report
                         of the result.
-
+                        
+Notice: Since we modified the output of sql statement by using decorating boundaries, 
+the passing results of testing.py are 0. However, the content of the output table should 
+be the same as test1.out and test2.out. 
 
