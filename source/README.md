@@ -21,6 +21,7 @@ db61b:                   A subdirectory containing db61b programs and WCG pictur
                             Used for our presentation.
 
 testing:                 Subdirectory holding files for integration testing:
+
     The basic implementation about DBMS (Required by CS61B)
 
     students.db, enrolled.db, courses.db(These .db file is in the outside)
@@ -39,6 +40,9 @@ testing:                 Subdirectory holding files for integration testing:
                         and test2.in, with the first line, all prompts,
                         and all blank lines removed (which is what 
                         test-filter does).
+    
+    
+    Use the data from the world cup to test addition features 
 
     WorldCupGroups.db, Shooters.db(These .db file is in the outside)
                     Sample database tables from the project handout.
