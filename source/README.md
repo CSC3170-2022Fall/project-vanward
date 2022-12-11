@@ -6,10 +6,7 @@ Result Display
 
     When you run the program db61b.db61b.main, you can just type the contents of .txt files in testing. 
     The table result will be showed in two places: terminal and pop-up windows.
-    
-![image](https://user-images.githubusercontent.com/107296354/206894171-6b21fade-b6ca-4d81-81bc-b5b7b16a3fa2.png)
 
-![image](https://user-images.githubusercontent.com/107296354/206894118-d592066b-7456-4786-a5b1-6b4d8b8c964c.png)
 
 
 db61b:                   A subdirectory containing db61b programs and WCG pictures
