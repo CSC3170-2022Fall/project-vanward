@@ -3,6 +3,7 @@ CONTENTS:
 ReadMe                  This file.
 
 Result Display
+
 When you run the program db61b.db61b.main, you can just type the contents of .txt files in testing. The table result will be showed in two places: terminal and pop-up windows.
 
 
