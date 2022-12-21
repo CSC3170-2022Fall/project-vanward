@@ -3,21 +3,21 @@ load Shooters;
 print WorldCupGroups;
 
 select Country, Continent from WorldCupGroups;
-
-select Country, Continent, Wins, Goals_For, Goals_against from WorldCupGroups where Continent = 'Europe';
-select Country, Continent, Goals_For from WorldCupGroups where Continent = 'Europe' order by Goals_For desc;
-
 select Continent, max(Goals_For) from WorldCupGroups group by Continent;
 select Continent, avg(Goals_For) from WorldCupGroups group by Continent;
 select Group, avg(Points), avg(Goals_For) from WorldCupGroups group by Group order by avg_Goals_For;
 select Group, avg(Points), avg(Goals_For) from WorldCupGroups group by Group having avg_Goals_For > '2' order by avg_Goals_For;
 
-select Country, Goals_For, Players, Player_Goals from WorldCupGroups, Shooters where Country = Country;
+select Country, Continent, Wins, Goals_For, Goals_against from WorldCupGroups where Continent = 'Europe';
+select Country, Continent, Goals_For from WorldCupGroups where Continent = 'Europe' order by Goals_For desc;
 
 column_minus WorldCupGroups: Goals_For and Goals_against to Goals_diff;
 
+select Country, Goals_For, Players, Player_Goals from WorldCupGroups, Shooters where Country = Country;
+
 create table ManyGoalsTeams as select Country, Goals_For from WorldCupGroups where Goals_For >= '4';
 select Country, Goals_For from ManyGoalsTeams;
+
 insert into ManyGoalsTeams values 'China', '10';
 select Country, Goals_For from ManyGoalsTeams;
 remove_row from ManyGoalsTeams where Goals_For <= '9';
