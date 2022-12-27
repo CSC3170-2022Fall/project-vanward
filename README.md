@@ -46,7 +46,7 @@ After thorough discussion, our team made the choice and the specification inform
 
 [video link](https://www.bilibili.com/video/BV1ov4y1z7fN/?share_source=copy_web&vd_source=5803090007523b0754e865e69770294a)  
 
-[slides](presentation.pdf)
+[slides](Presentation.pdf)
 
 ## Project Design
 The project is divided into ten classes. Some important classes will be introduced. The main class serves as the entry point and top-level control for the project. It is responsible for managing the overall flow of the program and coordinating the actions of the other classes. The command interpreter class is responsible for handling user input and communicating with the database class. It receives commands from the user and passes them on to the database class for processing. The database class contains tables, which are represented by the table class. The table class is responsible for performing various database operations, such as inserting, updating, and deleting rows, as well as interacting with files to read and write data. The row and column classes represent individual elements within the table, such as a specific row or column in a spreadsheet. These classes are used to store and manipulate data within the table.
