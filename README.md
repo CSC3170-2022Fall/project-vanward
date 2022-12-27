@@ -58,21 +58,19 @@ After thorough discussion, our team made the choice and the specification inform
 
 
 
-### Aggregate functions:
+### Aggregate functions
 First, use a string list to record the type of aggregate functions for each column. Then assume there is no aggregate function and do a similar process until after group by.
 Then for each column, do the corresponding operations.
 
-### Condition clauses.
-Statement Structure: where <column name> <relation> <column name>/constant
+### Condition clauses
+
 In the class “Condition”, the program will get three variables: column1, relation and column2 or constant. Relation is one of the symbols: "<, >, =, <=, >=, !=". And then the program will filter the data matching the conditions.
 
-### Remove_row clauses.
-Statement Structure: remove from <tables> <condition clause>;
+### Remove_row clauses
+
  “removeRowStatement”: the function is similar to the “select” except that it will delete rows satisfying the conditions of the specific table.
 
 ### Group by Clause
-
-Statement structure: select <column name> from <tables> group by <column name>
 
 First, the program checks if the next token in the input is the string "group" and if the following token is the string "by". It then calls a function called name() to get the name of the column to group the rows by.
 

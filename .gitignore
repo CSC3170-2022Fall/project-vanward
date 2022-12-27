@@ -1,0 +1,10 @@
+.vscode/
+node_modules/
+.DS_Store
+.env
+__pycache__/
+*.synctex.gz
+*.aux
+*.log
+*.out
+*.toc
