@@ -167,9 +167,8 @@ Use one string list to record the aggregate function type of each column. Then f
 
 Learn the knowledge about GitHub, and divide the task into small tasks. Then each teammate does one of the small tasks. finally, integrate what we have done.
 
-
-
-
-
+### About Contribution
+Every student in our group gives play to their strengths and helps each other. Every student tried his best. It is difficult to list individual contributions.
+So we're going to omit it. Thanks for your understanding.
 
   
