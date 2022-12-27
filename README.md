@@ -131,7 +131,7 @@ Statement Structure: <font color=green> column_minus \<table name>: \<column nam
 
 Notice: <font color=green> \<column name3> ::= \<column name1> - \<column name2> </font>
 
-First, the program will check if the first token of the string is "column_minus". Then, the program will get the table name (suppose the size of the table is m*n), two column names in the table, and the result column name after the minus operation. After that, the program will call the function "columnMinusCluase" to do the minus operation. If the values of the two columns are not digits, the program will raise the error reminder. Then, the program will iterate each row in the table so that it can combine the original values of the row with the minus result value to form a new row. All the new rows together form a new table (size of new table: m*(n+1)). Finally, the new table will be printed.
+First, the program will check if the first token of the string is "column_minus". Then, the program will get the table name (suppose the size of the table is m\*n), two column names in the table, and the result column name after the minus operation. After that, the program will call the function "columnMinusCluase" to do the minus operation. If the values of the two columns are not digits, the program will raise the error reminder. Then, the program will iterate each row in the table so that it can combine the original values of the row with the minus result value to form a new row. All the new rows together form a new table (size of new table: m\*(n+1)). Finally, the new table will be printed.
 
 ### Column_plus Clause
   
@@ -139,7 +139,7 @@ Statement Structure: <font color=green> column_plus \<table name>: \<column name
   
 Notice: <font color=green> \<column name3> ::= \<column name1> - \<column name2> </font>
  
-First, the program will check if the first token of the string is "column_plus". Then, the program will get the table name (suppose the size of the table is m*n), two column names in the table, and the result column name after the plus operation. After that, the program will call the function "columnPlusCluase" to do the plus operation. If the values of the two columns are not digits, the program will raise the error reminder. Then, the program will iterate each row in the table so that it can combine the original values of the row with the plus result value to form a new row. All the new rows together form a new table (size of new table: m*(n+1)). Finally, the new table will be printed.
+First, the program will check if the first token of the string is "column_plus". Then, the program will get the table name (suppose the size of the table is m\*n), two column names in the table, and the result column name after the plus operation. After that, the program will call the function "columnPlusCluase" to do the plus operation. If the values of the two columns are not digits, the program will raise the error reminder. Then, the program will iterate each row in the table so that it can combine the original values of the row with the plus result value to form a new row. All the new rows together form a new table (size of new table: m\*(n+1)). Finally, the new table will be printed.
   
 ## Difficulty Encountered & Solutions
 
