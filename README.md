@@ -53,27 +53,36 @@ The project is divided into ten classes. Some important classes will be introduc
 
 ## Functionality Implementation
 
+**Notice**: In the section "statement structure", we use Backus–Naur Form (BNF) for the ease of understanding our version of SQL language structure.
+
 ### Order by
-  We iterate through the table n times(n is the number of the rows) to find the maximum row in each iteration, then add the row to a new table.
 
-### Visualization of table
-  We use jtable library to visualize the table. The different countries will be shown with their corresponding national flags. To implement this, we name the flag picture files with their country names. Thus, we can relate each country to its flag picture.
+We iterate through the table n times (n is the number of the rows) to find the maximum row in each iteration, then add the row to a new table.
 
+### Visualization of Table
+  
+We use jtable library to visualize the table. The different countries will be shown with their corresponding national flags. To implement this, we name the flag picture files with their country names. Thus, we can relate each country to its flag picture.
 
+### Aggregate Functions
 
-### Aggregate functions
 First, use a string list to record the type of aggregate functions for each column. Then assume there is no aggregate function and do a similar process until after group by.
 Then for each column, do the corresponding operations.
 
-### Condition clauses
+### Condition Clause
+
+Statement Structure: <font color=green> where \<column name> \<relation> \<column name> | constant </font>
 
 In the class “Condition”, the program will get three variables: column1, relation and column2 or constant. Relation is one of the symbols: "<, >, =, <=, >=, !=". And then the program will filter the data matching the conditions.
 
-### Remove_row clauses
+### Remove_row Clause
+
+Statement Structure: <font color=green> remove from \<tables> \<condition clause>; </font>
 
  “removeRowStatement”: the function is similar to the “select” except that it will delete rows satisfying the conditions of the specific table.
 
 ### Group by Clause
+
+Statement structure: <font color=green> select \<column name> from \<tables> group by \<column name>; </font>
 
 First, the program checks if the next token in the input is the string "group" and if the following token is the string "by". It then calls a function called name() to get the name of the column to group the rows by.
 
@@ -85,6 +94,9 @@ Finally, the code iterates over each row in the select table and for each row, i
 
 ### Having Clause
 
+Statement structure: <font color=green> select \<column name><sup>+</sup> from \<tables> group by \<column name>+ having 
+\<condition clause>; </font>
+
 The program creates a new table called having_table using the Table class and initializes it with the column titles from a table called group_table. It then creates an ArrayList of Condition objects called having_conditions and another ArrayList of String objects called column_titles_.
 
 The program iterates through the column titles in group_table and adds them to column_titles_. After that, it calls a method called conditionClause and passes in group_table as an argument, and assigns the return value to having_conditions.
@@ -94,16 +106,32 @@ Finally, it calls the select method on group_table and passes in column_titles_ 
 
 ### Select Clause
 
-First, the program creates three array lists to store selected column titles (two array lists to obtain distinct column title and prevent duplicated column title) and the name of aggregate functions if there is any. 
+Statement Structure:  <font color=green>select \<column name><sup>+</sup>, from \<tables> \<condition clause>; </font> 
+
+First, the program creates three array lists to store selected column titles (two array lists to obtain distinct column title and prevent duplicated column title) and the name of aggregate functions if there is any.
 Then, by using the functions provided by the tokenizer class to check if there is any aggregate functions (“avg”, “sum”, “min”, “max”, “count”),  if there is aggregate function(s) in the statement, do the corresponding operation(s). At the same time, the program will store the selected column name(s) into the array list. Then the program will obtain targeted table(s) after the “from” statement.  
 If the statement contains “where”, “group by”, “having”, “order by”, the program will do the corresponding operation(s) until it ends with “;”.
 
 ### Insert Clause
 
+Statement Structure: <font color=green>insert into \<table name> values \<literal><sup>+</sup>, ;</font>
+
 First, the program will add the literals into the value array list. Then, create a new row to hold these values(literals) (More specifically, transform the value array list to the type Row). Finally, add the new row into the corresponding table.
 
 ### Create Clause
-Statement Structure: create table. In the function “tabledefinition”, the program will first array list to store the column titles (column names). Then, create and initialize a new table object containing the column titles. 
+Statement Structure: <font color=green> create table \<name> \<table definition>; </font> 
+
+Notice: <font color=green> \<table definition> ::= ( \<column name><sup>+</sup>, ) | as \<select clause> </font>
+
+In the function “tabledefinition”, the program will first use array list to store the column titles (column names). Then, create and initialize a new table object containing the column titles. If the statement contains “as”, the program will execute the function “selectclause” and select the corresponding information from the table to form a new table. Finally, put the new table and its name to the database.
+
+### Column_minus Clause
+
+Statement Structure: <font color=green> column_minus \<table name>: \<column name1> and \<column name2> to \<column name3>; </font>
+
+Notice: <font color=green> \<column name3> ::= \<column name1> - \<column name2> </font>
+
+First, the program will check if the first token of the string is "column_minus". Then, the program will get the table name (suppose the size of the table is m*n), two column names in the table, and the result column name after the minus operation. After that, the program will call the function "columnMinusClause" to do the minus operation. If the values of the two columns are not digits, the program will raise the error reminder. Then, the program will iterate each row in the table so that it can combine the original values of the row with the minus result value to form a new row. All the new rows together form a new table. Finally, the new table will be printed.
 
 ## Difficulty Encountered & Solutions
 
