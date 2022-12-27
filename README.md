@@ -29,9 +29,110 @@ After thorough discussion, our team made the choice and the specification inform
 - Our option choice is: **Option 3**
 - For the progess summary, please refer to [Project-Specification.md](Project-Specification.md)
 
+## How to run
+1. Build a new directory.
+2. Put source/direcotry, source/makefile, source/testing/files together. For example, Put db61b,makefile,Shooter.db,WroldCupGroups.db these four files together to test the data from the worldcup.
+3.  Run "make" to compile.
+4. Run "java db61b.Main" to run the DBMS.
+
 
 ## Project Abstract
   This project aims to implement a relational database management system. The DBMS consists of tables with row(s) and column(s), and query language to retrieve relevant information from the database. The project reflects our understanding on the low level working meachanism of database management system. Our implementation includes creation, deletion, updating of tables (more specifically, insertion of rows and etc.), and selection of desired information by stating conditions. Other than that, the DBMS will evaluate the sql commands and return relevant messages if errors occur for the purpose of reminding. For the ease of implementation, the "join" statement can be view as natural join by default. The implementation will also include retrieval of information from multiple tables. To test whether the implemented DBMS works properly and correctly or not, test cases will be provided for the enhancement of our DBMS and better user understanding. Additionnally, this project will extend some additional methods in order to re-implement Assignment2 such as in, order, etc.  
 
 ## Project Progress
  We have finished the basic implementation about database management system. i.e, we have passed the tests provided by CS61B and meet its requirement. We intend to realize some new funtions in the following days, like order by, delete, etc. Hopefully we will finish the program before 12/10. We would like to give the presentation in Tuesday.
+
+ ## The Video Link and Slides.
+
+[video link](https://www.bilibili.com/video/BV1ov4y1z7fN/?share_source=copy_web&vd_source=5803090007523b0754e865e69770294a)  
+
+[slides](presentation.pdf)
+
+## Functionality Implementation
+
+### Order by
+  We iterate through the table n times(n is the number of the rows) to find the maximum row in each iteration, then add the row to a new table.
+
+### Visualization of table
+  We use jtable library to visualize the table. The different countries will be shown with their corresponding national flags. To implement this, we name the flag picture files with their country names. Thus, we can relate each country to its flag picture.
+
+
+
+### Aggregate functions:
+First, use a string list to record the type of aggregate functions for each column. Then assume there is no aggregate function and do a similar process until after group by.
+Then for each column, do the corresponding operations.
+
+### Condition clauses.
+Statement Structure: where <column name> <relation> <column name>/constant
+In the class “Condition”, the program will get three variables: column1, relation and column2 or constant. Relation is one of the symbols: "<, >, =, <=, >=, !=". And then the program will filter the data matching the conditions.
+
+### Remove_row clauses.
+Statement Structure: remove from <tables> <condition clause>;
+ “removeRowStatement”: the function is similar to the “select” except that it will delete rows satisfying the conditions of the specific table.
+
+### Group by Clause
+
+Statement structure: select <column name> from <tables> group by <column name>
+
+First, the program checks if the next token in the input is the string "group" and if the following token is the string "by". It then calls a function called name() to get the name of the column to group the rows by.
+
+Then the program checks that the column obtained from name() is a "normal" aggregate type and that all other return columns are not "normal" aggregate types. If either of these conditions is not met, an error is thrown with the message "Group by is error format!".
+
+After that, the program creates a new Column object with the name of the group column and the select table as arguments. It then creates a new LinkedHashMap called groups to store the different groups.
+
+Finally, the code iterates over each row in the select table and for each row, it gets the value in the group column. It then checks if there is already a group with that value in the groups map. If there is not, it creates a new Table object with the column titles and adds the row to it. If there is already a group with that value, it adds the row to the existing group's table.
+
+### Having Clause
+
+The program creates a new table called having_table using the Table class and initializes it with the column titles from a table called group_table. It then creates an ArrayList of Condition objects called having_conditions and another ArrayList of String objects called column_titles_.
+
+The program iterates through the column titles in group_table and adds them to column_titles_. After that, it calls a method called conditionClause and passes in group_table as an argument, and assigns the return value to having_conditions.
+
+Finally, it calls the select method on group_table and passes in column_titles_ and having_conditions as arguments, and assigns the return value to having_table. It then assigns having_table to group_table.
+
+
+### Select Clause
+
+First, the program creates three array lists to store selected column titles (two array lists to obtain distinct column title and prevent duplicated column title) and the name of aggregate functions if there is any. 
+Then, by using the functions provided by the tokenizer class to check if there is any aggregate functions (“avg”, “sum”, “min”, “max”, “count”),  if there is aggregate function(s) in the statement, do the corresponding operation(s). At the same time, the program will store the selected column name(s) into the array list. Then the program will obtain targeted table(s) after the “from” statement.  
+If the statement contains “where”, “group by”, “having”, “order by”, the program will do the corresponding operation(s) until it ends with “;”.
+
+### Insert Clause
+
+First, the program will add the literals into the value array list. Then, create a new row to hold these values(literals) (More specifically, transform the value array list to the type Row). Finally, add the new row into the corresponding table.
+
+### Create Clause
+Statement Structure: create table. In the function “tabledefinition”, the program will first array list to store the column titles (column names). Then, create and initialize a new table object containing the column titles. 
+
+## Difficulty Encountered & Solutions
+
+### Additional function
+
+#### Write code over the given huge skeleton (CS61B)
+
+1. Read the whole introduction carefully
+2. Perfect each small program
+3. Overall debugging modification
+
+#### How to implement functionality "group by"
+
+Suppose group by x, where x is the column name.
+
+1. First, deal with a simple situation: only aggregate functions without group by
+2. Then, according to column x, divide the table into several sub-tables. Then deal with each sub-table (To deal with each sub-table, group by can be ignored since the values of column x are the same. Therefore, using the step 1 approach to dealing with it)
+3. Finally, integrate the results of each sub-table into a new table
+
+#### How to implement functionality "aggregate functions"
+
+Use one string list to record the aggregate function type of each column. Then for each column, do the corresponding operation.
+
+### Cooperation among teammates
+
+Learn the knowledge about GitHub, and divide the task into small tasks. Then each teammate does one of the small tasks. finally, integrate what we have done.
+
+
+
+
+
+
+  

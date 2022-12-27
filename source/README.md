@@ -4,21 +4,19 @@ ReadMe                  This file.
 
 Result Display
 
-    When you run the program db61b.db61b.main, you can just type the .txt files contents of testing folder in the terminal. 
+    When you run the program db61b.Main, you can just type the .txt files contents of testing folder in the terminal. 
     The table result will be showed in two places: terminal and pop-up windows.
 
 
 
 db61b:                   A subdirectory containing db61b programs and WCG pictures
 
-    db61b                   A subdirectory containing skeletons for the 
-                            db61b package:
-        Main.java             The main program---entry point to the db61b system.
-        Database.java         Abstraction for an entire collection of tables.  
-        Table.java            Abstraction for one table.
-        Row.java              Abstraction for one row of a table.
+    Main.java             The main program---entry point to the db61b system.
+    Database.java         Abstraction for an entire collection of tables.  
+    Table.java            Abstraction for one table.
+    Row.java              Abstraction for one row of a table.
     WCG_picture             A subdirectory containing flag-pictures of participating countries in the World Cup
-                            Used for our presentation.
+                        Used for our presentation.
 
 testing:                 Subdirectory holding files for integration testing:
 
