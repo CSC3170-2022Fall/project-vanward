@@ -42,7 +42,7 @@ public class JTableImg extends JFrame {
             Vector<Object> tmp = new Vector<>();
 			for(int i = 0; i < row_data.length; ++i){	
 				if(i == country_index){
-					String path_name = "source/db61b/WCG_picture/" 
+					String path_name = "db61b/WCG_picture/" 
 						+ row_data[i] + ".png";
  					Icon icon = new ImageIcon(path_name);
 					tmp.add(icon);
