@@ -73,13 +73,13 @@ First, the program will add the literals to the value array list. Then, create a
   
 ### Remove_row Clause
 
-Statement Structure: <font color=green> remove from \<tables> \<condition clause>; </font>
+Statement Structure: <font color=green> remove from \<table name> \<condition clause>; </font>
 
 “removeRowStatement”: the function is similar to the “select” except that it will delete rows satisfying the conditions of the specific table.
   
 ### Select Clause
 
-Statement Structure:  <font color=green>select \<column name><sup>+</sup>, from \<tables> \<condition clause>; </font> 
+Statement Structure:  <font color=green>select \<column name><sup>+</sup>, from \<table name><sup>+</sup>, \<condition clause>; </font> 
 
 First, the program creates three array lists to store selected column titles (two array lists to obtain distinct column title and prevent duplicated column title) and the name of aggregate functions if there is any.
 Then, by using the functions provided by the tokenizer class to check if there are any aggregate functions (“avg”, “sum”, “min”, “max”, “count”),  if there is aggregate function(s) in the statement, do the corresponding operation(s). At the same time, the program will store the selected column name(s) in the array list. Then the program will obtain targeted table(s) after the “from” statement.  
@@ -97,7 +97,7 @@ First, the program will check if the first token of the string is "column_minus"
   
 Statement Structure: <font color=green> column_plus \<table name>: \<column name1> and \<column name2> to \<column name3>; </font>
   
-Notice: <font color=green> \<column name3> ::= \<column name1> - \<column name2> </font>
+Notice: <font color=green> \<column name3> ::= \<column name1> + \<column name2> </font>
  
 First, the program will check if the first token of the string is "column_plus". Then, the program will get the table name (suppose the size of the table is m\*n), two column names in the table, and the result column name after the plus operation. After that, the program will call the function "columnPlusCluase" to do the plus operation. If the values of the two columns are not digits, the program will raise the error reminder. Then, the program will iterate each row in the table so that it can combine the original values of the row with the plus result value to form a new row. All the new rows together form a new table (size of the new table: m\*(n+1)). Finally, the new table will be printed.
 
@@ -114,7 +114,9 @@ In the class “Condition”, the program will get three variables: column1, rel
 
 ### Group by Clause
 
-Statement structure: <font color=green> select \<column name> from \<tables> group by \<column name>; </font>
+Statement Structure: <font color=green> select \<column name><sup>+</sup>, from \<table name> group by \<column name>; </font>
+  
+**Notice**: In most cases, select multiple columns but group by one column often accompany with aggregate function(s).
 
 First, the program checks if the next token in the input is the string "group" and if the following token is the string "by". It then calls a function called name() to get the name of the column to group the rows by.
 
@@ -126,7 +128,7 @@ Finally, the code iterates over each row in the select table and for each row, i
 
 ### Having Clause
 
-Statement structure: <font color=green> select \<column name><sup>+</sup> from \<tables> group by \<column name> having 
+Statement Structure: <font color=green> select \<column name><sup>+</sup>, from \<table name> group by \<column name> having 
 \<condition clause>; </font>
 
 The program creates a new table called having_table using the Table class and initializes it with the column titles from a table called group_table. It then creates an ArrayList of Condition objects called having_conditions and another ArrayList of String objects called column_titles_.
@@ -135,7 +137,9 @@ The program iterates through the column titles in group_table and adds them to c
 
 Finally, it calls the select method on group_table and passes in column_titles_ and having_conditions as arguments, and assigns the return value to having_table. It then assigns having_table to group_table.
  
-### Order by
+### Order by Clause
+  
+Statement Structure: <font color=green> select \<column name><sup>+</sup>, from \<table name><sup>+</sup>, order by \<column name>; </font>
 
 The program iterates through the table n times (n is the number of the rows) to find the maximum or minimum (if the statement includes "desc" after order by \<column name>) row in each iteration, then add the row to a new table and remove the maximum or minimum (if the statement includes "desc" after order by \<column name>) row from the table.
 
