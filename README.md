@@ -35,12 +35,11 @@ After thorough discussion, our team made the choice and the specification inform
 3.  Run "make" to compile.
 4. Run "java db61b.Main" to run the DBMS.
 
-
 ## Project Abstract
-  This project aims to implement a relational database management system. The DBMS consists of tables with row(s) and column(s), and query language to retrieve relevant information from the database. The project reflects our understanding on the low level working meachanism of database management system. Our implementation includes creation, deletion, updating of tables (more specifically, insertion of rows and etc.), and selection of desired information by stating conditions. Other than that, the DBMS will evaluate the sql commands and return relevant messages if errors occur for the purpose of reminding. For the ease of implementation, the "join" statement can be view as natural join by default. The implementation will also include retrieval of information from multiple tables. To test whether the implemented DBMS works properly and correctly or not, test cases will be provided for the enhancement of our DBMS and better user understanding. Additionnally, this project will extend some additional methods in order to re-implement Assignment2 such as in, order, etc.  
+  This project aims to implement a relational database management system. The DBMS consists of tables with row(s) and column(s), and query language to retrieve relevant information from the database. The project reflects our understanding of the low-level working mechanism of the database management system. Our implementation includes creation, deletion, updating of tables (more specifically, insertion of rows and etc.), and selection of desired information by stating conditions. Other than that, the DBMS will evaluate the SQL commands and return relevant messages if errors occur for the purpose of reminding. For ease of implementation, the "join" statement can be viewed as natural join by default. The implementation will also include the retrieval of information from multiple tables. To test whether the implemented DBMS works properly and correctly or not, test cases will be provided for the enhancement of our DBMS and better user understanding. Additionally, this project will extend some additional methods in order to re-implement Assignment 2 such as group by, order by and etc.
 
 ## Project Progress
- We have finished the basic implementation about database management system. i.e, we have passed the tests provided by CS61B and meet its requirement. We intend to realize some new funtions in the following days, like order by, delete, etc. Hopefully we will finish the program before 12/10. We would like to give the presentation in Tuesday.
+ We have finished the basic implementation of the database management system. i.e, we have passed the tests provided by CS61B and meet its requirement. We intend to realize some new functions in the following days, like order by, delete, etc. We finished the program on 12/10. 
 
  ## The Video Link and Slides.
 
@@ -48,8 +47,12 @@ After thorough discussion, our team made the choice and the specification inform
 
 [slides](Presentation.pdf)
 
-## Project Design
-The project is divided into ten classes. Some important classes will be introduced. The main class serves as the entry point and top-level control for the project. It is responsible for managing the overall flow of the program and coordinating the actions of the other classes. The command interpreter class is responsible for handling user input and communicating with the database class. It receives commands from the user and passes them on to the database class for processing. The database class contains tables, which are represented by the table class. The table class is responsible for performing various database operations, such as inserting, updating, and deleting rows, as well as interacting with files to read and write data. The row and column classes represent individual elements within the table, such as a specific row or column in a spreadsheet. These classes are used to store and manipulate data within the table.
+## Program Design
+- Project Skeleton 
+
+  ![Screenshot](https://github.com/MikeZhong21/CSC3170-2022Fall-project-vanward/blob/main/Screenshot%202022-12-28%20174715.png?raw=true "Screenshot")
+
+As "Project Skeleton" demonstrates, the project is divided into ten classes. Some important classes will be introduced. The main class serves as the entry point and top-level control for the project. It is responsible for managing the overall flow of the program and coordinating the actions of the other classes. The command interpreter class is responsible for handling user input and communicating with the database class. It receives commands from the user and passes them on to the database class for processing. The database class contains tables, which are represented by the table class. The table class is responsible for performing various database operations, such as inserting, updating, and deleting rows, as well as interacting with files to read and write data. The row and column classes represent individual elements within the table, such as a specific row or column in a spreadsheet. These classes are used to store and manipulate data within the table. The jtable and jTableImg classes are used for the visualization of table.
 
 ## Functionality Implementation
 
@@ -57,11 +60,11 @@ The project is divided into ten classes. Some important classes will be introduc
 
 ### Order by
 
-We iterate through the table n times (n is the number of the rows) to find the maximum row in each iteration, then add the row to a new table.
+We iterate through the table n times (n is the number of the rows) to find the maximum or minimum (if desc) row in each iteration, then add the row to a new table.
 
 ### Visualization of Table
   
-We use jtable library to visualize the table. The different countries will be shown with their corresponding national flags. To implement this, we name the flag picture files with their country names. Thus, we can relate each country to its flag picture.
+We use the jtable library to visualize the table. The different countries will be shown with their corresponding national flags. To implement this, we name the flag picture files with their country names. Thus, we can relate each country to its flag picture.
 
 ### Aggregate Functions
 
@@ -72,7 +75,7 @@ Then for each column, do the corresponding operations.
 
 Statement Structure: <font color=green> where \<column name> \<relation> \<column name> | constant </font>
 
-In the class “Condition”, the program will get three variables: column1, relation and column2 or constant. Relation is one of the symbols: "<, >, =, <=, >=, !=". And then the program will filter the data matching the conditions.
+In the class “Condition”, the program will get three variables: column1, relation, and column2 or constant. The relation is one of the symbols: "<, >, =, <=, >=, !=". And then the program will filter the data matching the conditions.
 
 ### Remove_row Clause
 
@@ -109,21 +112,21 @@ Finally, it calls the select method on group_table and passes in column_titles_ 
 Statement Structure:  <font color=green>select \<column name><sup>+</sup>, from \<tables> \<condition clause>; </font> 
 
 First, the program creates three array lists to store selected column titles (two array lists to obtain distinct column title and prevent duplicated column title) and the name of aggregate functions if there is any.
-Then, by using the functions provided by the tokenizer class to check if there is any aggregate functions (“avg”, “sum”, “min”, “max”, “count”),  if there is aggregate function(s) in the statement, do the corresponding operation(s). At the same time, the program will store the selected column name(s) into the array list. Then the program will obtain targeted table(s) after the “from” statement.  
+Then, by using the functions provided by the tokenizer class to check if there are any aggregate functions (“avg”, “sum”, “min”, “max”, “count”),  if there is aggregate function(s) in the statement, do the corresponding operation(s). At the same time, the program will store the selected column name(s) in the array list. Then the program will obtain targeted table(s) after the “from” statement.  
 If the statement contains “where”, “group by”, “having”, “order by”, the program will do the corresponding operation(s) until it ends with “;”.
 
 ### Insert Clause
 
 Statement Structure: <font color=green>insert into \<table name> values \<literal><sup>+</sup>, ;</font>
 
-First, the program will add the literals into the value array list. Then, create a new row to hold these values(literals) (More specifically, transform the value array list to the type Row). Finally, add the new row into the corresponding table.
+First, the program will add the literals to the value array list. Then, create a new row to hold these values(literals) (More specifically, transform the value array list to the type Row). Finally, add the new row to the corresponding table.
 
 ### Create Clause
 Statement Structure: <font color=green> create table \<name> \<table definition>; </font> 
 
 Notice: <font color=green> \<table definition> ::= ( \<column name><sup>+</sup>, ) | as \<select clause> </font>
 
-In the function “tabledefinition”, the program will first use array list to store the column titles (column names). Then, create and initialize a new table object containing the column titles. If the statement contains “as”, the program will execute the function “selectclause” and select the corresponding information from the table to form a new table. Finally, put the new table and its name to the database.
+In the function “tabledefinition”, the program will first use array list to store the column titles (column names). Then, create and initialize a new table object containing the column titles. If the statement contains “as”, the program will execute the function “selectclause” and select the corresponding information from the table to form a new table. Finally, put the new table and its name into the database.
 
 ### Column_minus Clause
 
@@ -131,7 +134,7 @@ Statement Structure: <font color=green> column_minus \<table name>: \<column nam
 
 Notice: <font color=green> \<column name3> ::= \<column name1> - \<column name2> </font>
 
-First, the program will check if the first token of the string is "column_minus". Then, the program will get the table name (suppose the size of the table is m\*n), two column names in the table, and the result column name after the minus operation. After that, the program will call the function "columnMinusCluase" to do the minus operation. If the values of the two columns are not digits, the program will raise the error reminder. Then, the program will iterate each row in the table so that it can combine the original values of the row with the minus result value to form a new row. All the new rows together form a new table (size of new table: m\*(n+1)). Finally, the new table will be printed.
+First, the program will check if the first token of the string is "column_minus". Then, the program will get the table name (suppose the size of the table is m\*n), two column names in the table, and the result column name after the minus operation. After that, the program will call the function "columnMinusCluase" to do the minus operation. If the values of the two columns are not digits, the program will raise the error reminder. Then, the program will iterate each row in the table so that it can combine the original values of the row with the minus result value to form a new row. All the new rows together form a new table (size of the new table: m\*(n+1)). Finally, the new table will be printed.
 
 ### Column_plus Clause
   
@@ -139,7 +142,7 @@ Statement Structure: <font color=green> column_plus \<table name>: \<column name
   
 Notice: <font color=green> \<column name3> ::= \<column name1> - \<column name2> </font>
  
-First, the program will check if the first token of the string is "column_plus". Then, the program will get the table name (suppose the size of the table is m\*n), two column names in the table, and the result column name after the plus operation. After that, the program will call the function "columnPlusCluase" to do the plus operation. If the values of the two columns are not digits, the program will raise the error reminder. Then, the program will iterate each row in the table so that it can combine the original values of the row with the plus result value to form a new row. All the new rows together form a new table (size of new table: m\*(n+1)). Finally, the new table will be printed.
+First, the program will check if the first token of the string is "column_plus". Then, the program will get the table name (suppose the size of the table is m\*n), two column names in the table, and the result column name after the plus operation. After that, the program will call the function "columnPlusCluase" to do the plus operation. If the values of the two columns are not digits, the program will raise the error reminder. Then, the program will iterate each row in the table so that it can combine the original values of the row with the plus result value to form a new row. All the new rows together form a new table (size of the new table: m\*(n+1)). Finally, the new table will be printed.
   
 ## Difficulty Encountered & Solutions
 
@@ -168,7 +171,7 @@ Use one string list to record the aggregate function type of each column. Then f
 Learn the knowledge about GitHub, and divide the task into small tasks. Then each teammate does one of the small tasks. finally, integrate what we have done.
 
 ### About Contribution
-Every student in our group gives play to their strengths and helps each other. Every student tried his best. It is difficult to list individual contributions.
+Every student in our group gives plays to their strengths and helps each other. Every student tried his best. It is difficult to list every tiny task and individual contributions.
 So we're going to omit it. Thanks for your understanding.
 
   
